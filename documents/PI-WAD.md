@@ -2,7 +2,7 @@
 
 ## Nome do Projeto: Smart Room
 
-#### Autora do projeto: Ana Cristina Alves Jardim
+### Autora do projeto: Ana Cristina Alves Jardim
 
 ## Sumário
 
@@ -11,6 +11,8 @@
 3. [Projeto Técnico da Aplicação Web](#c3)  
 4. [Desenvolvimento da Aplicação Web](#c4)  
 5. [Referências](#c5)  
+
+---
 
 <br>
 
