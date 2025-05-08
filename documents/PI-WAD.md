@@ -86,9 +86,138 @@ Critério de aceite 1 | CR1: A aplicação deve disponibilizar um campo para que
 
 ### 3.1. Modelagem do banco de dados  (Semana 3)
 
-*Posicione aqui os diagramas de modelos relacionais do seu banco de dados, apresentando todos os esquemas de tabelas e suas relações. Utilize texto para complementar suas explicações, se necessário.*
+Para a modelagem do banco de dados dessa aplicação, desenvolveu-se o modelo lógico desse banco antes da criação do modelo físico. Segue abaixo o modelo lógico:
 
-*Posicione também o modelo físico com o Schema do BD (arquivo .sql)*
+![modeloLogico](./assets/modeloLogico.png)
+
+Foi necessário a criação de oito tabelas para armazenar todos os dados da aplicação, são elas:
+
+#### Tabela Alunos:
+Tem os atributos matricula, nome, turma, ano, senha_aluno e numero_reports. Essa entidade representa de forma abstrata os alunos de uma escola/universidade e guarda as informações necessárias para diferenciá-los, para que eles realizem login na plataforma e para contabilizar a quantidade de vezes que eles já foram reportados, ou seja, denunciados pro outros colegas por terem descumprido o horário de reserva. Um aluno pode fazer de 0 a N reservas
+
+---
+
+#### Tabela Professores:
+Contém os campos id_professor, nome, nome_user e senha_professor. Ela representa os professores que podem suspender alunos no sistemae e armazena informações básicas para identificação.
+
+--- 
+
+#### Tabela Salas_disponiveis:
+Apresenta os atributos id_salas_dispo, numero_sala, dia_disponivel, a_partir_das e ate_as. Representa os horários e dias em que as salas estão disponíveis para reserva.
+
+---
+
+#### Tabela Reservas:
+Possui os campos id_reservas, matricula_alunos, id_salas_dispo, id_duracao, horário e dia. Essa entidade guarda os registros de reservas feitas pelos alunos para uso das salas disponíveis, indicando quem reservou qual sala, por quanto tempo e quando.
+
+---
+
+#### Tabela Duracao:
+Apresenta os campos id_duracao e descricao_duracao. Ela armazena descrições padronizadas para diferentes durações de uso de salas, como "30 minutos", "1 hora", etc., a fim de facilitar o controle de tempo de cada reserva.
+
+---
+
+#### Tabela Cancelamentos:
+Contém os campos id_cancelar, id_reservas e dia_cancelar. Ela armazena os registros de cancelamentos de reservas já feitas pelos alunos. Um cancelamento sempre está vinculado a uma reserva existente.
+
+--- 
+
+#### Tabela Reports:
+Tem os atributos id_report, id_reservas, descricao e data_report. Essa tabela registra denúncias feitas por alunos em relação ao uso indevido das reservas, permitindo a inclusão de uma descrição e data do ocorrido. Cada denúncia está associada a uma reserva específica.
+
+---
+
+#### Tabela Suspensoes:
+Possui os campos id_suspensao, id_professor, matricula_alunos e dia_suspensao. Representa as punições aplicadas por professores a alunos que descumprirem regras da plataforma, como uso indevido de salas. A suspensão está associada tanto ao professor que a aplicou quanto ao aluno penalizado.
+
+O modelo físico foi implementado no arquivo init.sql, como segue abaixo:
+
+```sql
+-- Criar extensão para suportar UUIDs, se ainda não estiver ativada
+CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
+
+-- Criar tabela Alunos
+CREATE TABLE Alunos (
+matricula INT PRIMARY KEY NOT NULL,
+nome VARCHAR(100) NOT NULL,
+turma VARCHAR(10) NOT NULL,
+ano INT NOT NULL,
+senha_aluno VARCHAR(60) NOT NULL,
+numero_reports INT DEFAULT 0
+);
+
+-- Criar tabela Salas_disponiveis
+CREATE TABLE Salas_disponiveis(
+id_salas_dispo SERIAL PRIMARY KEY,
+numero_sala INT NOT NULL,
+dia_disponivel DATE NOT NULL,
+a_partir_das TIME NOT NULL,
+ate_as TIME NOT NULL,
+CHECK (ate_as > a_partir_das)
+);
+
+
+-- Criar tabela Duracao
+CREATE TABLE Duracao(
+id_duracao SERIAL PRIMARY KEY,
+descricao_duracao VARCHAR(100) NOT NULL
+);
+
+-- Adicionar os tipos de duração de reserva existentes na escola ou universidade
+INSERT INTO Duracao (descricao_duracao) Values
+('30 minutos'),
+('1 hora'),
+('1 hora e 30 minutos'),
+('2 horas');
+
+-- Criar tabela Reservas
+CREATE TABLE Reservas (
+id_reservas SERIAL PRIMARY KEY,
+matricula_alunos INT NOT NULL,
+id_salas_dispo INT NOT NULL,
+id_duracao INT NOT NULL,
+horario TIME NOT NULL,
+dia DATE NOT NULL,
+FOREIGN KEY (matricula_alunos) REFERENCES Alunos(matricula),
+FOREIGN KEY (id_salas_dispo) REFERENCES Salas_Disponiveis(id_salas_dispo),
+FOREIGN KEY (id_duracao) REFERENCES Duracao(id_duracao)
+);
+
+-- Criar tabela Reports
+CREATE TABLE Reports (
+id_report SERIAL PRIMARY KEY,
+id_reservas INT NOT NULL,
+descricao VARCHAR(300) NOT NULL,
+data_report DATE NOT NULL,
+FOREIGN KEY (id_reservas) REFERENCES Reservas(id_reservas)
+);
+
+-- Criar tabela Cancelamentos
+CREATE TABLE Cancelamentos (
+id_cancelar SERIAL PRIMARY KEY,
+id_reservas INT NOT NULL,
+dia_cancelar DATE NOT NULL,
+FOREIGN KEY (id_reservas) REFERENCES Reservas(id_reservas)
+);
+
+-- Criar tabela Professores
+CREATE TABLE Professores (
+id_professor SERIAL PRIMARY KEY,
+nome VARCHAR(100) NOT NULL,
+nome_user VARCHAR(100) NOT NULL UNIQUE,
+senha_professor VARCHAR(60) NOT NULL
+);
+
+-- Criar tabela Suspensoes
+CREATE TABLE Suspensoes (
+id_suspensao SERIAL PRIMARY KEY,
+id_professor INT NOT NULL,
+matricula_alunos INT NOT NULL,
+dia_suspensao DATE NOT NULL,
+FOREIGN KEY (id_professor) REFERENCES Professores(id_professor),
+FOREIGN KEY (matricula_alunos) REFERENCES Alunos(matricula)
+);
+```
 
 ### 3.1.1 BD e Models (Semana 5)
 *Descreva aqui os Models implementados no sistema web*
