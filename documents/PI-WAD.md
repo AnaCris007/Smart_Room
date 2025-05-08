@@ -248,7 +248,7 @@ Exibida quando o usuário clica em um ícone específico na tela 2, revelando um
 #### Tela 7 - Cancelamento:
 Pop-up exibido quando o usuário opta por cancelar uma reserva na tela 2. Ela solicita confirmação da ação.
 
-### Tela 8 - Mensagem de Sucesso:
+#### Tela 8 - Mensagem de Sucesso:
 Pop-up de confirmação exibido após a confirmação do cancelamento na tela 7, informando que a reserva foi cancelada com sucesso e permitindo que o usuário volte para a tela 2.
 
 Os wireframes foram construídos com base nas User Stories descritas na seção 2.2 desse documento, em especial, a User Story US01, que trata da visualização de salas disponíveis para reserva em um dia específico. A funcionalidade é contemplada nas seguinte tela:
