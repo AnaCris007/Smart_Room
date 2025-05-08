@@ -5,8 +5,6 @@ Este projeto tem como objetivo o desenvolvimento de uma aplicação web que perm
 
 Além de facilitar a organização da rotina de estudos, a aplicação contribui para otimizar o uso dos espaços disponíveis e promover a autonomia dos estudantes. Outro benefício importante é a redução da carga administrativa da instituição de ensino, que não precisará mais gerenciar manualmente as reservas — tornando o processo mais ágil, eficiente e automatizado.
 
-Adicionalmente, a aplicação oferece aos estudantes a possibilidade de reportar colegas que ocupem as salas por um tempo superior ao reservado, colaborando para o bom uso coletivo dos espaços.
-
 ## 📁 Estrutura de pastas
 
 Esse projeto utiliza o modelo MVC (Model-View-Controller), que é um padrão para a arquitetura de software , que separa responsabilidades para facilitar a manutenção e a escalabilidade e divide uma aplicação web em três camadas principais:
@@ -76,6 +74,7 @@ As dependências do projeto são pacotes ou bibliotecas externas que o projeto p
 ### Configurar variáveis de ambiente:
 Crie um arquivo .env na raiz do projeto com base no .env.example. Nele, você deve definir as variáveis necessárias para a conexão com o banco de dados e outras configurações sensíveis. Utilizar variáveis de ambiente ajuda a manter informações como senhas e credenciais fora do código-fonte, aumentando a segurança e facilitando a configuração do projeto em diferentes ambientes.
 Exemplo de conteúdo para o .env:
+
 ```
 PORT=3000
 DB_HOST=localhost

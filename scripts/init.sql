@@ -23,7 +23,6 @@ ate_as TIME NOT NULL,
 CHECK (ate_as > a_partir_das)
 );
 
-
 -- Criar tabela Duracao
 CREATE TABLE Duracao(
 id_duracao SERIAL PRIMARY KEY,
@@ -50,15 +49,6 @@ FOREIGN KEY (id_salas_dispo) REFERENCES Salas_Disponiveis(id_salas_dispo),
 FOREIGN KEY (id_duracao) REFERENCES Duracao(id_duracao)
 );
 
--- Criar tabela Reports
-CREATE TABLE Reports (
-id_report SERIAL PRIMARY KEY,
-id_reservas INT NOT NULL,
-descricao VARCHAR(300) NOT NULL,
-data_report DATE NOT NULL,
-FOREIGN KEY (id_reservas) REFERENCES Reservas(id_reservas)
-);
-
 -- Criar tabela Cancelamentos
 CREATE TABLE Cancelamentos (
 id_cancelar SERIAL PRIMARY KEY,
@@ -67,20 +57,3 @@ dia_cancelar DATE NOT NULL,
 FOREIGN KEY (id_reservas) REFERENCES Reservas(id_reservas)
 );
 
--- Criar tabela Professores
-CREATE TABLE Professores (
-id_professor SERIAL PRIMARY KEY,
-nome VARCHAR(100) NOT NULL,
-nome_user VARCHAR(100) NOT NULL UNIQUE,
-senha_professor VARCHAR(60) NOT NULL
-);
-
--- Criar tabela Suspensoes
-CREATE TABLE Suspensoes (
-id_suspensao SERIAL PRIMARY KEY,
-id_professor INT NOT NULL,
-matricula_alunos INT NOT NULL,
-dia_suspensao DATE NOT NULL,
-FOREIGN KEY (id_professor) REFERENCES Professores(id_professor),
-FOREIGN KEY (matricula_alunos) REFERENCES Alunos(matricula)
-);

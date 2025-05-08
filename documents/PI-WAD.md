@@ -26,11 +26,14 @@ Este projeto tem como objetivo o desenvolvimento de uma aplicação web que perm
 
 Este projeto é focado em um perfil principal: estudantes matriculados em uma escola ou faculdade que possua espaços de estudo que precisam ser reservados. Com o objetivo de desenvolver uma aplicação centrada na experiência do usuário final, uma persona representativa foi desenvoldida, conforme apresentado a seguir:
 
-<img src="assets/persona.png" style="display: block; margin: 0 auto;" />
-<br>
-<p align="center" style="margin: 0; padding: 0;">
-  <i><small>Legenda: A imagem do João foi gerada pelo site <a href="https://this-person-does-not-exist.com">This Person Does Not Exist</a></small></i>
-</p>
+<div align="center">
+  <sub>FIGURA 1 - Persona</sub><br>
+  <img src= "./assets/persona.png" width="100%"
+  alt="Persona "><br>
+  <sup>Fonte: Material produzido pelos autora, 2025</sup>
+</div>
+
+A imagem do João foi gerada pelo site https://this-person-does-not-exist.com.
 
 ### 2.2. User Stories (Semana 01)
 
@@ -77,8 +80,8 @@ Critério de aceite 1 | CR1: O usuário deve poder reservar uma sala, só quando
 Identificação | US04
 --- | ---
 Persona | João Gonçalves.
-User Story | "Como estudante, quero poder informar quando alguém violar o tempo de permanência em uma sala, para que a instituição possa tomar providências e essa situação não se repita"
-Critério de aceite 1 | CR1: A aplicação deve disponibilizar um campo para que o usuário possa informar quando uma sala que já deveria estar disponível continua ocupada além do tempo permitido.
+User Story | "Como estudante, quero poder cancelar uma reserva para que ela volte a sala possa voltar a ficar disponível para os meus colegas"
+Critério de aceite 1 | CR1: A aplicação deve disponibilizar um campo para que o usuário possa cancelar uma reserva.
 
 ---
 
@@ -88,47 +91,50 @@ Critério de aceite 1 | CR1: A aplicação deve disponibilizar um campo para que
 
 Para a modelagem do banco de dados dessa aplicação, desenvolveu-se o modelo lógico desse banco antes da criação do modelo físico. Segue abaixo o modelo lógico:
 
-![modeloLogico](./assets/modeloLogico.png)
+<div align="center">
+  <sub>FIGURA 2 - Modelo lógico do banco de dados da aplicação</sub><br>
+  <img src= "./assets/modeloLogico.png" width="100%"
+  alt="Modelo lógico "><br>
+  <sup>Fonte: Material produzido pela autora, 2025</sup>
+</div>
 
-Foi necessário a criação de oito tabelas para armazenar todos os dados da aplicação, são elas:
+Foram criadas cinco tabelas para armazenar todos os dados da aplicação, sendo elas:
 
 #### Tabela Alunos:
-Tem os atributos matricula, nome, turma, ano, senha_aluno e numero_reports. Essa entidade representa de forma abstrata os alunos de uma escola/universidade e guarda as informações necessárias para diferenciá-los, para que eles realizem login na plataforma e para contabilizar a quantidade de vezes que eles já foram reportados, ou seja, denunciados pro outros colegas por terem descumprido o horário de reserva. Um aluno pode fazer de 0 a N reservas
-
----
-
-#### Tabela Professores:
-Contém os campos id_professor, nome, nome_user e senha_professor. Ela representa os professores que podem suspender alunos no sistemae e armazena informações básicas para identificação.
+Tem os atributos matricula, nome, turma, ano, senha_aluno. Essa entidade representa de forma abstrata os alunos de uma escola ou universidade, armazenando as informações necessárias para identificá-los e permitir que realizem login na plataforma. Um aluno pode fazer de 0 a N reservas, ou seja, a cardinalidade entre Alunos e Reservas é 0:N.
 
 --- 
 
 #### Tabela Salas_disponiveis:
-Apresenta os atributos id_salas_dispo, numero_sala, dia_disponivel, a_partir_das e ate_as. Representa os horários e dias em que as salas estão disponíveis para reserva.
-
----
-
-#### Tabela Reservas:
-Possui os campos id_reservas, matricula_alunos, id_salas_dispo, id_duracao, horário e dia. Essa entidade guarda os registros de reservas feitas pelos alunos para uso das salas disponíveis, indicando quem reservou qual sala, por quanto tempo e quando.
+Contém os atributos id_salas_dispo, numero_sala, dia_disponivel, a_partir_das e ate_as. Essa entidade representa os períodos em que cada sala está disponível para reserva. Cada disponibilidade pode estar vinculada a várias reservas, configurando uma cardinalidade de 1:N entre Salas_disponiveis e Reservas.
 
 ---
 
 #### Tabela Duracao:
-Apresenta os campos id_duracao e descricao_duracao. Ela armazena descrições padronizadas para diferentes durações de uso de salas, como "30 minutos", "1 hora", etc., a fim de facilitar o controle de tempo de cada reserva.
+Contém os atributos id_duracao e descricao_duracao. Essa entidade define os tipos de duração disponíveis para uma reserva, como: 30 minutos, 1 hora, 1 hora e 30 minutos ou 2 horas. Cada tipo de duração pode ser associado a várias reservas, estabelecendo uma cardinalidade de 1:N entre Duracao e Reservas.
 
 ---
 
 #### Tabela Cancelamentos:
-Contém os campos id_cancelar, id_reservas e dia_cancelar. Ela armazena os registros de cancelamentos de reservas já feitas pelos alunos. Um cancelamento sempre está vinculado a uma reserva existente.
-
---- 
-
-#### Tabela Reports:
-Tem os atributos id_report, id_reservas, descricao e data_report. Essa tabela registra denúncias feitas por alunos em relação ao uso indevido das reservas, permitindo a inclusão de uma descrição e data do ocorrido. Cada denúncia está associada a uma reserva específica.
+Contém os atributos id_cancelar, id_reservas e dia_cancelar. Ela registra o cancelamento de uma reserva. Cada cancelamento refere-se a uma única reserva, e essa relação é opcional, portanto, a cardinalidade entre Reservas e Cancelamentos é 1:1 (opcional).
 
 ---
 
-#### Tabela Suspensoes:
-Possui os campos id_suspensao, id_professor, matricula_alunos e dia_suspensao. Representa as punições aplicadas por professores a alunos que descumprirem regras da plataforma, como uso indevido de salas. A suspensão está associada tanto ao professor que a aplicou quanto ao aluno penalizado.
+#### Tabela Reservas:
+É a tabela central do modelo e por isso possui muitos atributos: id_reservas, matricula_alunos, id_salas_dispo, id_duracao, horário e dia. Três desses atributos são chaves estrangeiras: matricula_alunos, id_salas_dispo e id_duracao. Ela representa cada reserva feita por um aluno para uma sala em um determinado horário e dia. Além disso, cada reserva está vinculada a um único aluno, uma única sala e uma única duração.
+
+---
+
+### 🔁 Resumo das Cardinalidades
+
+| Tabela Origem     | Tabela Destino     | Cardinalidade |
+|-------------------|--------------------|---------------|
+| Alunos            | Reservas           | 0:N           |
+| Salas_disponiveis | Reservas           | 1:N           |
+| Duracao           | Reservas           | 1:N           |
+| Reservas          | Cancelamentos      | 1:1 (opcional) |
+
+---
 
 O modelo físico foi implementado no arquivo init.sql, como segue abaixo:
 
@@ -192,31 +198,6 @@ data_report DATE NOT NULL,
 FOREIGN KEY (id_reservas) REFERENCES Reservas(id_reservas)
 );
 
--- Criar tabela Cancelamentos
-CREATE TABLE Cancelamentos (
-id_cancelar SERIAL PRIMARY KEY,
-id_reservas INT NOT NULL,
-dia_cancelar DATE NOT NULL,
-FOREIGN KEY (id_reservas) REFERENCES Reservas(id_reservas)
-);
-
--- Criar tabela Professores
-CREATE TABLE Professores (
-id_professor SERIAL PRIMARY KEY,
-nome VARCHAR(100) NOT NULL,
-nome_user VARCHAR(100) NOT NULL UNIQUE,
-senha_professor VARCHAR(60) NOT NULL
-);
-
--- Criar tabela Suspensoes
-CREATE TABLE Suspensoes (
-id_suspensao SERIAL PRIMARY KEY,
-id_professor INT NOT NULL,
-matricula_alunos INT NOT NULL,
-dia_suspensao DATE NOT NULL,
-FOREIGN KEY (id_professor) REFERENCES Professores(id_professor),
-FOREIGN KEY (matricula_alunos) REFERENCES Alunos(matricula)
-);
 ```
 
 ### 3.1.1 BD e Models (Semana 5)
@@ -235,7 +216,49 @@ FOREIGN KEY (matricula_alunos) REFERENCES Alunos(matricula)
 
 ### 3.3. Wireframes (Semana 03)
 
-*Posicione aqui as imagens do wireframe construído para sua solução e, opcionalmente, o link para acesso (mantenha o link sempre público para visualização).*
+O wireframe é um esboço de um projeto web, seja ele um site, um aplicativo ou uma aplicação web. Ele serve para auxiliar o designer na definição da estrutura final do projeto de maneira rápida e simples. Os wireframes podem ser classificados como de baixa, média ou alta fidelidade, conforme o nível de detalhamento (MIRO, 2025). Com o objetivo de iniciar a construção da interface da aplicação, foi elaborado um wireframe de baixa fidelidade, com poucos detalhes e foco na organização estrutural, conforme apresentado a seguir:
+
+<div align="center">
+  <sub>FIGURA 3 - Wireframe de baixa fidelidade</sub><br>
+  <img src= "./assets/wireframe.png" width="100%"
+  alt="Wireframe "><br>
+  <sup>Fonte: Material produzido pela autora, 2025</sup>
+</div>
+ 
+Com o objetivo de facilitar o entendimento do wireframe, as telas possuem números de identificação no canto superior direito. Assim:
+
+#### Tela 1 - Login:
+Permite que o aluno realize login na plataforma, informando matrícula e senha.
+
+#### Tela 2 - Reservas:
+Exibe todas as reservas ativas do aluno e contém o botão para criação de uma nova reserva.
+
+#### Tela 3 - Nova Reserva:
+Apresenta ao usuário um calendário semanal com as salas disponíveis em cada dia, permitindo selecionar uma sala para reserva.
+
+#### Tela 4 - Confirmação da Reserva:
+Mostra um resumo da reserva com sala, dia, horário e duração, solicitando confirmação do usuário.
+
+#### Tela 5 - Cadastro:
+Caso o usuário ainda não possua cadastro, ele pode acessar esta tela a partir da tela 1. Aqui, ele informa matrícula, nome, turma, ano e senha para se cadastrar.
+
+#### Tela 6 - Informações:
+Exibida quando o usuário clica em um ícone específico na tela 2, revelando uma aba lateral com o total de reservas e cancelamentos realizados.
+
+#### Tela 7 - Cancelamento:
+Pop-up exibido quando o usuário opta por cancelar uma reserva na tela 2. Ela solicita confirmação da ação.
+
+### Tela 8 - Mensagem de Sucesso:
+Pop-up de confirmação exibido após a confirmação do cancelamento na tela 7, informando que a reserva foi cancelada com sucesso e permitindo que o usuário volte para a tela 2.
+
+Os wireframes foram construídos com base nas User Stories descritas na seção 2.2 desse documento, em especial, a User Story US01, que trata da visualização de salas disponíveis para reserva em um dia específico. A funcionalidade é contemplada nas seguinte tela:
+- Tela 3: apresenta o calendário semanal com as salas disponíveis por dia, atendendo aos critérios CR1 e CR2.
+
+Além disso, ao clicar em uma sala, o usuário é direcionado à tela de confirmação da reserva, onde pode selecionar o horário de início e a duração, contemplando os critérios da User Story US02. O botão “Confirmar” permite ao usuário efetivar a reserva, de acordo com o critério CR1 da User Story US03. E a opção “Cancelar” aparece junto a cada reserva realizada, sendo seguida por uma tela de confirmação e uma mensagem de sucesso, implementando o critério de aceitação da User Story US04.
+
+Os wireframes também incluem o fluxo de autenticação do usuário (login e cadastro), garantindo que apenas alunos registrados tenham acesso à funcionalidade de reservas, respeitando a estrutura prevista no banco de dados.
+
+Esse conjunto de telas demonstra de forma clara como as funcionalidades foram pensadas com base nas necessidades reais do usuário, garantindo que o sistema seja funcional, intuitivo e centrado no estudante.
 
 ### 3.4. Guia de estilos (Semana 05)
 
@@ -272,7 +295,6 @@ FOREIGN KEY (matricula_alunos) REFERENCES Alunos(matricula)
 
 ## <a name="c5"></a>5. Referências
 
-_Incluir as principais referências de seu projeto, para que seu parceiro possa consultar caso ele se interessar em aprofundar. Um exemplo de referência de livro e de site:_<br>
+MIRO. O que é wireframe? Disponível em: https://miro.com/pt/wireframe/o-que-e-wireframe/. Acesso em: 8 maio 2025.https://miro.com/pt/wireframe/o-que-e-wireframe/
 
----
 ---
