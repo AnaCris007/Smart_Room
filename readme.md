@@ -23,7 +23,7 @@ meu-projeto/
 │   └── HomeController.js
 ├── documents/             # Arquivos relacionados ao WAD(Web Design Document)
 │   └── assets/            # Assets do WAD
-│   └── PI-WAD.md         
+│   └── PI-WAD.md          # Web Design Document 
 ├── models/                # Definição de modelos de dados (estrutura do banco)
 │   └── User.js
 ├── routes/                # Definição das rotas do sistema
@@ -32,13 +32,14 @@ meu-projeto/
 │   └── userService.js
 ├── assets/                # Arquivos públicos como imagens e fontes
 ├── scripts/               # Arquivos de JavaScript públicos
+│   └── init.sql           # Script de criação e inserção de dados no banco
+│   └── runSQLScript.js    # Script para executar comandos SQL via Node.js      
 ├── styles/                # Arquivos CSS públicos
 ├── tests/                 # Arquivos de testes unitários
 │   └── example.test.js
 ├── .gitignore             # Arquivo para ignorar arquivos no Git
 ├── .env.example           # Arquivo de exemplo para variáveis de ambiente
 ├── jest.config.js         # Arquivo de configuração do Jest
-├── package-lock.json      # Gerenciador de dependências do Node.js
 ├── package.json           # Gerenciador de dependências do Node.js
 ├── readme.md              # Documentação do projeto (Markdown)
 ├── rest.http              # Teste de endpoints (opcional)
@@ -67,7 +68,6 @@ Após instalar o Node.js, no diretório do projeto, rode o seguinte comando para
 
 ```
 npm install
-
 ```
 As dependências do projeto são pacotes ou bibliotecas externas que o projeto precisa para funcionar corretamente. Elas estão listadas no arquivo package.json, que define quais pacotes o projeto depende e suas versões.
 
@@ -81,11 +81,22 @@ DB_HOST=localhost
 DB_USER=seu_usuario
 DB_PASSWORD=sua_senha
 DB_NAME=smart_room_db
+DB_SSL = 'true'
 ```
+### Criar banco de dados:
+
+Crie um banco de dados PostgreSQL com o nome especificado no seu arquivo .env. Você pode usar o Supabase para isso.
+
+###  Executar script SQL:
+Para criar as tabelas e a estrutura inicial do banco, execute o seguinte comando no terminal:
+
+```
+npm run initdb
+```
+
 ### Executar o servidor:
 Após realisar os passos anteriores, execute o servidor com o seguinte comando no terminal do seu projeto:
 ```
 npm start
-
 ```
 Se tudo estiver configurado corretamente, o projeto estará rodando localmente em http://localhost:3000 ou na porta definida no seu .env.

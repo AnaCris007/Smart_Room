@@ -8,20 +8,27 @@
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node server.js"
+    "start": "node server.js",
+    "initdb": "node scripts/runSQLScript.js"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/AnaCris007/Smart_Room.git"
   },
   "keywords": [],
-  "author": "",
+  "author": "ana",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/AnaCris007/Smart_Room/issues"
   },
   "homepage": "https://github.com/AnaCris007/Smart_Room#readme",
   "dependencies": {
-    "express": "^5.1.0"
+    "dotenv": "^16.5.0",
+    "ejs": "^3.1.10",
+    "express": "^5.1.0",
+    "pg": "^8.15.6"
+  },
+  "devDependencies": {
+    "jest": "^29.7.0"
   }
 }
