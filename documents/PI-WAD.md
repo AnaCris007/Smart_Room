@@ -29,7 +29,7 @@ Este projeto é focado em um perfil principal: estudantes matriculados em uma es
 <div align="center">
   <sub>FIGURA 1 - Persona</sub><br>
   <img src= "./assets/persona.png" width="100%"
-  alt="Persona "><br>
+  alt="Persona"><br>
   <sup>Fonte: Material produzido pelos autora, 2025</sup>
 </div>
 
@@ -225,6 +225,8 @@ O wireframe é um esboço de um projeto web, seja ele um site, um aplicativo ou 
   <sup>Fonte: Material produzido pela autora, 2025</sup>
 </div>
  
+Para melhor visualização dos wireframes, acesse o link: [Wireframes Figma](https://www.figma.com/design/nnneG7MvcCWrjghrtlv3r7/Wireframe?node-id=0-1&t=peOSSvikLLiF2O9z-1).
+
 Com o objetivo de facilitar o entendimento do wireframe, as telas possuem números de identificação no canto superior direito. Assim:
 
 #### Tela 1 - Login:
@@ -290,8 +292,6 @@ Esse conjunto de telas demonstra de forma clara como as funcionalidades foram pe
 
 *Indique pontos fortes e pontos a melhorar de maneira geral.*
 *Relacione também quaisquer outras ideias que você tenha para melhorias futuras.*
-
-
 
 ## <a name="c5"></a>5. Referências
 
