@@ -1,16 +1,19 @@
 const express = require('express');
 const router = express.Router();
 
-// Importa os métodos do controller
-const {
-  cadastrarSala,
-  listarSalas,
-} = require('../controllers/Salas_disponiveisController');
+const salasController = require('../controllers/Salas_disponiveisController');
 
-// Rota para cadastrar nova sala disponível
-router.post('/', cadastrarSala);
+// Criar uma nova sala disponível
+router.post('/', salasController.criarSalaDisponivel);
 
-// Rota para listar todas as salas disponíveis
-router.get('/', listarSalas);
+// Listar todas as salas disponíveis
+router.get('/', salasController.listarSalasDisponiveis);
+
+// Atualizar uma sala disponível pelo ID
+router.put('/:id', salasController.atualizarSalaDisponivel);
+
+// Excluir uma sala disponível pelo ID
+router.delete('/:id', salasController.excluirSalaDisponivel);
 
 module.exports = router;
+

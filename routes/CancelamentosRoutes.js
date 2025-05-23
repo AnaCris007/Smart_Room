@@ -1,16 +1,8 @@
 const express = require('express');
 const router = express.Router();
+const CancelamentoController = require('../controllers/CancelamentosController');
 
-// Importa os métodos do controller
-const {
-  registrarCancelamento,
-  listarCancelamentos,
-} = require('../controllers/CancelamentosController');
-
-// Rota para registrar um novo cancelamento
-router.post('/', registrarCancelamento);
-
-// Rota para listar todos os cancelamentos
-router.get('/', listarCancelamentos);
+router.post('/', CancelamentoController.cancelarReserva);
+router.get('/', CancelamentoController.listarCancelamentos);
 
 module.exports = router;

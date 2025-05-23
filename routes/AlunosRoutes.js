@@ -1,16 +1,9 @@
 const express = require('express');
 const router = express.Router();
+const AlunosController = require('../controllers/AlunosController');
 
-// Importa os métodos do controller
-const {
-  cadastrarAluno,
-  listarAlunos,
-} = require('../controllers/AlunosController');
-
-// Rota para cadastrar novo aluno
-router.post('/', cadastrarAluno);
-
-// Rota para listar todos os alunos
-router.get('/', listarAlunos);
+router.post('/', AlunosController.cadastrarAluno);
+router.get('/', AlunosController.listarAlunos);
+router.get('/:id/reservas', AlunosController.listarReservasPorAluno);
 
 module.exports = router;

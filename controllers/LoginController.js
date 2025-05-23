@@ -1,42 +1,45 @@
-const db = require('../config/database');
-const bcrypt = require('bcrypt');
+const LoginModel = require('../models/LoginModel');
 
-const loginAluno = async (req, res) => {
+// Controlador para realizar o login do aluno usando matrícula e senha
+const realizarLogin = async (req, res) => {
   const { matricula, senha_aluno } = req.body;
 
-  // Verifica se os dados foram fornecidos
+  // Validação simples para garantir que matrícula e senha foram fornecidas
   if (!matricula || !senha_aluno) {
-    return res.status(400).json({ error: 'Matrícula e senha são obrigatórias.' });
+    return res.status(400).json({ erro: 'Matrícula e senha são obrigatórios.' });
   }
 
   try {
-    // Busca o aluno pela matrícula
-    const query = 'SELECT * FROM Alunos WHERE matricula = $1';
-    const result = await db.query(query, [matricula]);
+    // Chama o model para verificar as credenciais no banco de dados
+    const resultado = await LoginModel.verificarLogin(matricula, senha_aluno);
 
-    // Se não encontrou aluno
-    if (result.rows.length === 0) {
-      return res.status(404).json({ error: 'Matrícula não encontrada.' });
+    // Se nenhum usuário for encontrado, retorna erro 401 (Não autorizado)
+    if (resultado.rows.length === 0) {
+      return res.status(401).json({ erro: 'Matrícula ou senha inválidos.' });
     }
 
-    const aluno = result.rows[0];
+    const aluno = resultado.rows[0];
 
-    // Compara a senha enviada com o hash armazenado
-    const senhaCorreta = await bcrypt.compare(senha_aluno, aluno.senha_aluno);
-
-    if (!senhaCorreta) {
-      return res.status(401).json({ error: 'Senha incorreta.' });
-    }
-
-    // Autenticação bem-sucedida
-    return res.status(200).json({ mensagem: 'Login bem-sucedido.', aluno });
-
+    // Retorna uma resposta com os dados relevantes do aluno (sem a senha)
+    res.status(200).json({
+      mensagem: 'Login realizado com sucesso.',
+      aluno: {
+        id: aluno.id_aluno,
+        nome: aluno.nome,
+        turma: aluno.turma,
+        ano: aluno.ano,
+        email: aluno.email,
+        matricula: aluno.matricula,
+      }
+    });
   } catch (error) {
-    console.error('Erro no login:', error);
-    return res.status(500).json({ error: 'Erro interno do servidor.' });
+    // Em caso de erro interno, loga no console e retorna erro 500
+    console.error('Erro ao realizar login:', error);
+    res.status(500).json({ erro: 'Erro interno ao tentar realizar o login.' });
   }
 };
 
+// Exporta o controlador para uso nas rotas
 module.exports = {
-  loginAluno,
+  realizarLogin,
 };

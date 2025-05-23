@@ -91,7 +91,7 @@ Crie um banco de dados PostgreSQL com o nome especificado no seu arquivo .env. V
 Para criar as tabelas e a estrutura inicial do banco, execute o seguinte comando no terminal:
 
 ```
-npm run initdb
+npm run migrate
 ```
 
 ### Executar o servidor:
@@ -99,4 +99,4 @@ Após realisar os passos anteriores, execute o servidor com o seguinte comando n
 ```
 npm start
 ```
-Se tudo estiver configurado corretamente, o projeto estará rodando localmente em http://localhost:3000 ou na porta definida no seu .env.
+Se tudo estiver configurado corretamente, o projeto estará rodando localmente em http://localhost:3000.

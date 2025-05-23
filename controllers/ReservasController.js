@@ -1,130 +1,83 @@
-const db = require('../config/database'); // Importa conexão com o banco
+const reservasModel = require('../models/ReservasModel');
 
-// Cadastrar uma nova reserva
-const cadastrarReserva = async (req, res) => {
-  const { matricula_alunos, id_salas_dispo, id_duracao, horario, dia } = req.body;
-
-  // Validação básica dos campos obrigatórios
-  if (!matricula_alunos || !id_salas_dispo || !id_duracao || !horario || !dia) {
-    return res.status(400).json({ error: 'Todos os campos são obrigatórios.' });
-  }
-
+// Criar uma nova reserva
+const criarReserva = async (req, res) => {
   try {
-    // Verifica se a duração existe na tabela Duracao
-    const duracaoCheck = await db.query(
-      'SELECT * FROM Duracao WHERE id_duracao = $1',
-      [id_duracao]
-    );
+    // Extrai os dados da reserva enviados no corpo da requisição
+    const { matricula_alunos, id_salas_dispo, id_duracao, horario, dia } = req.body;
 
-    if (duracaoCheck.rows.length === 0) {
-      return res.status(400).json({ error: 'Duração inválida. Escolha uma duração válida.' });
-    }
+    // Chama o model para inserir a nova reserva no banco de dados
+    const resultado = await reservasModel.criarReserva({ matricula_alunos, id_salas_dispo, id_duracao, horario, dia });
 
-    // Insere a nova reserva no banco de dados
-    const query = `
-      INSERT INTO Reservas (matricula_alunos, id_salas_dispo, id_duracao, horario, dia)
-      VALUES ($1, $2, $3, $4, $5)
-      RETURNING *;
-    `;
-    const values = [matricula_alunos, id_salas_dispo, id_duracao, horario, dia];
-
-    const { rows } = await db.query(query, values);
-
-    // Retorna a reserva criada
-    return res.status(201).json({ reserva: rows[0] });
-
+    // Retorna status 201 (Created) com a reserva criada
+    res.status(201).json({ mensagem: 'Reserva criada com sucesso!', reserva: resultado.rows[0] });
   } catch (error) {
-    console.error('Erro ao cadastrar reserva:', error);
-
-    // Exemplo: tratar erro de chave estrangeira inválida (FK)
-    if (error.code === '23503') {
-      return res.status(400).json({ error: 'Referência inválida para aluno, sala ou duração.' });
-    }
-
-    return res.status(500).json({ error: 'Erro interno do servidor.' });
+    // Em caso de erro, loga e retorna erro 500 (Internal Server Error)
+    console.error('Erro ao criar reserva:', error);
+    res.status(500).json({ mensagem: 'Erro ao criar reserva.' });
   }
 };
 
 // Listar todas as reservas
 const listarReservas = async (req, res) => {
   try {
-    const query = `
-      SELECT r.*, a.nome AS nome_aluno, s.numero_sala, d.descricao_duracao
-      FROM Reservas r
-      JOIN Alunos a ON r.matricula_alunos = a.matricula
-      JOIN Salas_disponiveis s ON r.id_salas_dispo = s.id_salas_dispo
-      JOIN Duracao d ON r.id_duracao = d.id_duracao
-      ORDER BY r.dia, r.horario;
-    `;
-    const { rows } = await db.query(query);
-    return res.status(200).json(rows);
+    // Chama o model para buscar todas as reservas no banco de dados
+    const resultado = await reservasModel.listarReservas();
 
+    // Retorna status 200 (OK) com o array de reservas
+    res.status(200).json(resultado.rows);
   } catch (error) {
     console.error('Erro ao listar reservas:', error);
-    return res.status(500).json({ error: 'Erro ao buscar reservas.' });
+    res.status(500).json({ mensagem: 'Erro ao listar reservas.' });
   }
 };
 
-// Editar uma reserva existente
-const editarReserva = async (req, res) => {
-  const { id } = req.params;
-  const { matricula_alunos, id_salas_dispo, id_duracao, horario, dia } = req.body;
-
-  if (!matricula_alunos || !id_salas_dispo || !id_duracao || !horario || !dia) {
-    return res.status(400).json({ error: 'Todos os campos são obrigatórios.' });
-  }
-
+// Atualizar uma reserva pelo id_reservas (passado como parâmetro de URL)
+const atualizarReserva = async (req, res) => {
   try {
-    const query = `
-      UPDATE Reservas
-      SET matricula_alunos = $1,
-          id_salas_dispo = $2,
-          id_duracao = $3,
-          horario = $4,
-          dia = $5
-      WHERE id_reservas = $6
-      RETURNING *;
-    `;
-    const values = [matricula_alunos, id_salas_dispo, id_duracao, horario, dia, id];
+    const id_reservas = req.params.id; // Pega o id da reserva da URL
+    const { id_salas_dispo, id_duracao, horario, dia } = req.body; // Novos dados para atualização
 
-    const { rows } = await db.query(query, values);
+    // Chama o model para atualizar a reserva com os dados fornecidos
+    const resultado = await reservasModel.atualizarReserva(id_reservas, { id_salas_dispo, id_duracao, horario, dia });
 
-    if (rows.length === 0) {
-      return res.status(404).json({ error: 'Reserva não encontrada.' });
+    // Se não encontrou a reserva para atualizar, retorna 404 (Not Found)
+    if (resultado.rowCount === 0) {
+      return res.status(404).json({ mensagem: 'Reserva não encontrada.' });
     }
 
-    return res.status(200).json({ reserva: rows[0] });
-
+    // Retorna status 200 com a reserva atualizada
+    res.status(200).json({ mensagem: 'Reserva atualizada com sucesso!', reserva: resultado.rows[0] });
   } catch (error) {
-    console.error('Erro ao editar reserva:', error);
-    return res.status(500).json({ error: 'Erro ao editar reserva.' });
+    console.error('Erro ao atualizar reserva:', error);
+    res.status(500).json({ mensagem: 'Erro ao atualizar reserva.' });
   }
 };
 
-// Deletar uma reserva pelo ID
-const deletarReserva = async (req, res) => {
-  const { id } = req.params;
-
+// Excluir uma reserva pelo id_reservas (passado como parâmetro de URL)
+const excluirReserva = async (req, res) => {
   try {
-    const query = 'DELETE FROM Reservas WHERE id_reservas = $1 RETURNING *;';
-    const { rows } = await db.query(query, [id]);
+    const id_reservas = req.params.id; // Pega o id da reserva da URL
 
-    if (rows.length === 0) {
-      return res.status(404).json({ error: 'Reserva não encontrada.' });
+    // Chama o model para excluir a reserva
+    const resultado = await reservasModel.excluirReserva(id_reservas);
+
+    // Se não encontrou a reserva para excluir, retorna 404 (Not Found)
+    if (resultado.rowCount === 0) {
+      return res.status(404).json({ mensagem: 'Reserva não encontrada.' });
     }
 
-    return res.status(200).json({ message: 'Reserva excluída com sucesso.' });
-
+    // Retorna status 200 com a confirmação da exclusão
+    res.status(200).json({ mensagem: 'Reserva excluída com sucesso!', reserva: resultado.rows[0] });
   } catch (error) {
-    console.error('Erro ao deletar reserva:', error);
-    return res.status(500).json({ error: 'Erro ao deletar reserva.' });
+    console.error('Erro ao excluir reserva:', error);
+    res.status(500).json({ mensagem: 'Erro ao excluir reserva.' });
   }
 };
 
-// Exporta todas as funções
 module.exports = {
-  cadastrarReserva,
+  criarReserva,
   listarReservas,
-  editarReserva,
-  deletarReserva
+  atualizarReserva,
+  excluirReserva,
 };

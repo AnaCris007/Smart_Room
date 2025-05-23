@@ -101,7 +101,7 @@ Para a modelagem do banco de dados dessa aplicação, desenvolveu-se o modelo l�
 Foram criadas cinco tabelas para armazenar todos os dados da aplicação, sendo elas:
 
 #### Tabela Alunos:
-Tem os atributos matricula, nome, turma, ano, senha_aluno. Essa entidade representa de forma abstrata os alunos de uma escola ou universidade, armazenando as informações necessárias para identificá-los e permitir que realizem login na plataforma. Um aluno pode fazer de 0 a N reservas, ou seja, a cardinalidade entre Alunos e Reservas é 0:N.
+Tem os atributos matricula, nome, turma, ano, email, senha_aluno. Essa entidade representa de forma abstrata os alunos de uma escola ou universidade, armazenando as informações necessárias para identificá-los e permitir que realizem login na plataforma. Um aluno pode fazer de 0 a N reservas, ou seja, a cardinalidade entre Alunos e Reservas é 0:N.
 
 --- 
 
@@ -201,18 +201,85 @@ FOREIGN KEY (id_reservas) REFERENCES Reservas(id_reservas)
 ```
 
 ### 3.1.1 BD e Models (Semana 5)
-*Descreva aqui os Models implementados no sistema web*
+Este projeto utiliza a arquitetura MVC (Model-View-Controller), onde os arquivos da pasta models são responsáveis pela comunicação com o banco de dados. Cada Model contém funções que executam consultas SQL para manipulação e recuperação dos dados utilizados pela aplicação.
+
+Abaixo está a descrição detalhada dos arquivos contidos na pasta models, incluindo as principais funções implementadas e suas finalidades:
+
+#### __AlunoModel.js__
+
+Responsável por lidar com os dados da tabela `alunos`, este arquivo possui as seguintes funções:
+
+| Função                     | Descrição                                                                     |
+|---------------------------|---------------------------------------------------------------------------------|
+| `cadastrarAluno`          | Cadastra um novo aluno no banco de dados.                                      |
+| `listarAlunos`            | Retorna uma lista de todos os alunos cadastrados.                              |
+| `listarReservasPorAlunoId`| Lista todas as reservas feitas por um aluno específico, baseado na matrícula.  |
+
+#### __CancelamentosModel.js__
+
+Este módulo é responsável por lidar com os cancelamentos de reservas no sistema. Ele interage com as tabelas `cancelamentos` e `reservas` do banco de dados.
+
+| Função               | Descrição                                                                                       |
+|----------------------|-------------------------------------------------------------------------------------------------|
+| `cancelarReserva`    | Insere um novo registro de cancelamento usando o `id_reservas` e define a data como o dia atual. |
+| `listarCancelamentos`| Retorna uma lista de todos os cancelamentos, incluindo informações detalhadas da reserva cancelada. |
+
+#### __LoginModel.js__
+
+Este módulo é responsável por verificar as credenciais de login dos alunos no sistema. Para isso, ele interage com a tabela alunos do banco de dados, a fim de validar a matrícula e a senha fornecidas.
+
+| Função            | Descrição                                                                 |
+|-------------------|---------------------------------------------------------------------------|
+| `verificarLogin`  | Verifica se a combinação de matrícula e senha do aluno existe no banco.  |
+
+#### __ReservasModel.js__
+
+Este módulo é responsável por gerenciar as operações de criação, listagem, atualização e exclusão de reservas no sistema. Ele interage com a tabela `reservas` do banco de dados.
+
+| Função              |    Descrição                                                                                     |
+|---------------------|-----------------------------------------------------------------------------------------------|
+| `criarReserva`      | Insere uma nova reserva no banco de dados com as informações de aluno, sala, duração, horário e data. |
+| `listarReservas`    | Retorna todas as reservas cadastradas, ordenadas por data (descendente) e horário.           |
+| `atualizarReserva`  | Atualiza os dados de uma reserva específica, identificada pelo seu `id_reservas`.            |
+| `excluirReserva`    | Exclui uma reserva existente com base no `id_reservas`, retornando os dados excluídos.       |
+
+#### __Salas_disponiveisModel.js__
+
+Este arquivo gerencia as operações relacionadas às salas disponíveis para reserva no sistema. Ele I
+interage diretamente com a tabela `salas_disponiveis` no banco de dados.
+
+| Função                  | Descrição                                                                                           |
+|-------------------------|---------------------------------------------------------------------------------------------------|
+| `criarSalaDisponivel`   | Insere uma nova sala disponível com número, dia e horário de disponibilidade.                      |
+| `listarSalasDisponiveis`| Retorna todas as salas disponíveis, ordenadas por dia e número da sala.                           |
+| `atualizarSalaDisponivel`| Atualiza os dados de uma sala disponível específica, identificada pelo `id_salas_dispo`.          |
+| `excluirSalaDisponivel` | Remove uma sala disponível do banco de dados pelo seu `id_salas_dispo`.                           |
 
 ### 3.2. Arquitetura (Semana 5)
 
-*Posicione aqui o diagrama de arquitetura da sua solução de aplicação web. Atualize sempre que necessário.*
+Este projeto adota a arquitetura **MVC (Model-View-Controller)** — em tradução livre, **Modelo-Visão-Controlador**. Essa arquitetura organiza o sistema em camadas bem definidas, o que facilita tanto a manutenção quanto a escalabilidade da aplicação.
 
-**Instruções para criação do diagrama de arquitetura**  
-- **Model**: A camada que lida com a lógica de negócios e interage com o banco de dados.
-- **View**: A camada responsável pela interface de usuário.
-- **Controller**: A camada que recebe as requisições, processa as ações e atualiza o modelo e a visualização.
-  
-*Adicione as setas e explicações sobre como os dados fluem entre o Model, Controller e View.*
+A **camada Model (Modelo)** é responsável pela comunicação com o banco de dados e pela definição das regras de negócio.
+
+A **camada Controller (Controlador)** atua como intermediária entre o Model e a View. Ela recebe as requisições HTTP, processa os dados por meio das funções definidas na camada Model e encaminha as respostas para a camada View.
+
+Por fim, a **camada View (Visão)** é responsável pela interface com o usuário, ou seja, pela apresentação visual da aplicação. Nela ficam armazenados os arquivos HTML e CSS que definem o que é exibido ao usuário.
+
+O diagrama a seguir ilustra a estrutura dessa arquitetura:
+
+<div align="center">
+  <sub>FIGURA 3 – Diagrama MVC</sub><br>
+  <img src="./assets/mvc.drawio.png" width="100%" alt="Diagrama"><br>
+  <sup>Fonte: Material produzido pela autora, 2025</sup>
+</div>
+
+Na sequência, apresenta-se um segundo diagrama que detalha a arquitetura da aplicação web desenvolvida, evidenciando os componentes criados em cada uma das camadas (Models, Controllers e Views), o Sistema de Gerenciamento de Banco de Dados (SGBD) utilizado e a ferramenta empregada para a hospedagem do banco de dados:
+
+<div align="center">
+  <sub>FIGURA 4 – Arquitetura do projeto</sub><br>
+  <img src="./assets/MVCdiagram.drawio.png" width="100%" alt="Diagrama"><br>
+  <sup>Fonte: Material produzido pela autora, 2025</sup>
+</div>
 
 ### 3.3. Wireframes (Semana 03)
 

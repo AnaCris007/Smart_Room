@@ -1,7 +1,7 @@
 // migrate.js
 const fs = require('fs');
 const path = require('path');
-const db = require('../config/database'); // ajuste o caminho se necessário
+const db = require('../config/db');
 
 const initSqlPath = path.join(__dirname, '../scripts/init.sql'); // Caminho para o arquivo init.sql
 
