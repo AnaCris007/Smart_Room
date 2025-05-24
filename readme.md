@@ -87,16 +87,40 @@ DB_SSL = 'true'
 
 Crie um banco de dados PostgreSQL com o nome especificado no seu arquivo .env. Você pode usar o Supabase para isso.
 
-###  Executar script SQL:
-Para criar as tabelas e a estrutura inicial do banco, execute o seguinte comando no terminal:
-
-```
+### Executar script SQL (migrações):
+Para criar as tabelas e a estrutura inicial do banco de dados, execute o seguinte comando no terminal:
+```bash
 npm run migrate
 ```
 
 ### Executar o servidor:
-Após realisar os passos anteriores, execute o servidor com o seguinte comando no terminal do seu projeto:
-```
+Após realizar os passos anteriores, execute o servidor com o seguinte comando no terminal do seu projeto:
+```bash
 npm start
 ```
 Se tudo estiver configurado corretamente, o projeto estará rodando localmente em http://localhost:3000.
+
+### Testar a API
+Você pode utilizar ferramentas como **Postman** ou **Insomnia** para testar os endpoints da API definidos na pasta `/routes`. Por exemplo:
+
+- `POST http://localhost:3000/reservas` - para criar uma nova reserva.
+
+Exemplo de Body (JSON):
+
+```json
+{
+  "matricula_alunos": "12345",
+  "id_salas_dispo": 1,
+  "id_duracao": 2,
+  "horario": "14:00",
+  "dia": "2025-05-25"
+}
+```
+- `GET http://localhost:3000/reservas` - retorna todas as reservas ordenadas por data.
+
+- `PUT http://localhost:3000/reservas/:id_reservas` - atualiza os dados de uma reserva específica.
+
+- `DELETE http://localhost:3000/reservas/:id_reservas` - remove uma reserva existente do sistema.
+
+Certifique-se de enviar os dados necessários no corpo da requisição (body), especialmente nos endpoints `POST` e `PUT`.
+

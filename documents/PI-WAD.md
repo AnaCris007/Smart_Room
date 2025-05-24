@@ -125,7 +125,7 @@ Contém os atributos id_cancelar, id_reservas e dia_cancelar. Ela registra o can
 
 ---
 
-### 🔁 Resumo das Cardinalidades
+### Resumo das Cardinalidades
 
 | Tabela Origem     | Tabela Destino     | Cardinalidade |
 |-------------------|--------------------|---------------|
@@ -286,7 +286,7 @@ Na sequência, apresenta-se um segundo diagrama que detalha a arquitetura da apl
 O wireframe é um esboço de um projeto web, seja ele um site, um aplicativo ou uma aplicação web. Ele serve para auxiliar o designer na definição da estrutura final do projeto de maneira rápida e simples. Os wireframes podem ser classificados como de baixa, média ou alta fidelidade, conforme o nível de detalhamento (MIRO, 2025). Com o objetivo de iniciar a construção da interface da aplicação, foi elaborado um wireframe de baixa fidelidade, com poucos detalhes e foco na organização estrutural, conforme apresentado a seguir:
 
 <div align="center">
-  <sub>FIGURA 3 - Wireframe de baixa fidelidade</sub><br>
+  <sub>FIGURA 5 - Wireframe de baixa fidelidade</sub><br>
   <img src= "./assets/wireframe.png" width="100%"
   alt="Wireframe "><br>
   <sup>Fonte: Material produzido pela autora, 2025</sup>
@@ -331,16 +331,179 @@ Esse conjunto de telas demonstra de forma clara como as funcionalidades foram pe
 
 ### 3.4. Guia de estilos (Semana 05)
 
-*Descreva aqui orientações gerais para o leitor sobre como utilizar os componentes do guia de estilos de sua solução.*
+Este guia de estilos tem como objetivo padronizar os aspectos visuais da aplicação Smart Room, promovendo consistência, legibilidade e uma experiência de usuário intuitiva. A seguir, apresentamos os elementos visuais e os componentes de interface utilizados no projeto, juntamente com orientações sobre como acessá-los no Figma.
 
+__Tipografia__
+
+A fonte utilizada em toda a aplicação é a Poppins, com hierarquias bem definidas (H1 a H4) para títulos, subtítulos e textos descritivos. A escolha dessa tipografia visa transmitir uma aparência moderna e de fácil leitura.
+
+__Paleta de Cores__
+
+A identidade visual do sistema é construída com tons de azul predominantes:
+
+- Azul escuro: #134A94
+
+- Azul vibrante: #2800ED
+
+- Azul claro: #72AAFF
+
+Além disso, cores neutras como #D9D9D9 (cinza claro) e #FFFFFF (branco) são utilizadas para equilibrar a interface e garantir contraste e acessibilidade.
+
+__Pop-ups e Alertas__
+
+Utilizados para informar ou solicitar ações do usuário, seguem um padrão com fundo azul claro, ícones de ação (ex: fechar) e textos centralizados. Exemplos:
+
+- “Verifique seu e-mail”
+
+- “Reserva concluída”
+
+- “Tem certeza?” (com botões de ação)
+
+__Botões__
+
+Seguem um estilo arredondado, com cores vibrantes (azul ou roxo) para ações primárias. Sempre com textos em caixa alta, alinhados ao centro para garantir clareza.
+
+__Assets__
+
+Logo: Utilizado em cabeçalhos e materiais institucionais.
+
+<div align="center">
+  <sub>FIGURA 6 - Logo Smart Room</sub><br>
+  <img src= "./assets/logo_meuProjeto.png" width="100%"
+  alt="Logo"><br>
+  <sup>Fonte: Material produzido pela autora, 2025</sup>
+</div>
+
+Ícones: Minimalistas e monocromáticos, representando ações como adicionar, cancelar, voltar, entre outros.
+
+<div align="center">
+  <sub>FIGURA 7 - Ícones</sub><br>
+  <img src= "./assets/icones.png" width="100%"
+  alt="Ícones"><br>
+  <sup>Fonte: Material produzido pela autora, 2025</sup>
+</div>
+
+Imagem de fundo: Fotografia de uma sala de aula, reforçando a identidade acadêmica do projeto.
+
+<div align="center">
+  <sub>FIGURA 8 - Imagem de Fundo</sub><br>
+  <img src= "./assets/fundo.png" width="100%"
+  alt="Imagem de Fundo"><br>
+  <sup>Fonte: Material produzido pela autora, 2025</sup>
+</div>
+
+__Acesso no Figma__
+
+Para visualizar o guia de estilos diretamente no Figma:
+- Acesse o link: [Smart Room](https://www.figma.com/design/nnneG7MvcCWrjghrtlv3r7/SmartRoom?node-id=98-272&t=I1Jfo7rR6IUTJgKQ-1).
+
+- Na aba lateral esquerda, localize a página Guia de Estilos;
+
+
+<div align="center">
+  <sub>FIGURA 9 - Indicação da localização da página Guia de Estilos</sub><br>
+  <img src= "./assets/guia.png" width="100%"
+  alt="Guia de Estilos"><br>
+  <sup>Fonte: Material produzido pela autora, 2025</sup>
+</div>
+
+O guia de estilos é uma ferramenta essencial para manter a identidade visual do Smart Room consistente ao longo de seu desenvolvimento. Ao seguir essas diretrizes, garantimos que todas as telas da aplicação estejam alinhadas com os objetivos do projeto, facilitando a colaboração entre designers, desenvolvedores e demais envolvidos na construção da solução. A padronização visual contribui diretamente para a usabilidade, acessibilidade e profissionalismo do sistema.
 
 ### 3.5. Protótipo de alta fidelidade (Semana 05)
 
-*Posicione aqui algumas imagens demonstrativas de seu protótipo de alta fidelidade e o link para acesso ao protótipo completo (mantenha o link sempre público para visualização).*
+O protótipo de alta fidelidade da aplicação Smart Room representa a versão visual mais próxima do produto final. Ele foi desenvolvido no Figma com base nas definições do guia de estilos e nas funcionalidades levantadas nas etapas anteriores do projeto. As telas a seguir simulam o funcionamento real do sistema, incluindo elementos visuais como tipografia, cores, botões, ícones e organização dos componentes. As figuras apresentadas nesta seção demonstram diferentes momentos da navegação pelo sistema, desde o acesso inicial até ações como confirmação de reserva e cancelamento. 
+
+<div align="center">
+  <sub>FIGURA 10 - Tela 1</sub><br>
+  <img src= "./assets/tela1.png" width="100%"
+  alt="Tela 1"><br>
+  <sup>Fonte: Material produzido pela autora, 2025</sup>
+</div>
+
+<div align="center">
+  <sub>FIGURA 11 - Tela 2</sub><br>
+  <img src= "./assets/tela2.png" width="100%"
+  alt="Tela 1"><br>
+  <sup>Fonte: Material produzido pela autora, 2025</sup>
+</div>
+
+<div align="center">
+  <sub>FIGURA 12 - Tela 3</sub><br>
+  <img src= "./assets/tela3.png" width="100%"
+  alt="Tela 1"><br>
+  <sup>Fonte: Material produzido pela autora, 2025</sup>
+</div>
+
+<div align="center">
+  <sub>FIGURA 13 - Tela 4</sub><br>
+  <img src= "./assets/tela4.png" width="100%"
+  alt="Tela 1"><br>
+  <sup>Fonte: Material produzido pela autora, 2025</sup>
+</div>
+
+<div align="center">
+  <sub>FIGURA 14 - Tela 5</sub><br>
+  <img src= "./assets/tela4.png" width="100%"
+  alt="Tela 1"><br>
+  <sup>Fonte: Material produzido pela autora, 2025</sup>
+</div>
+
+Para acessar o protótipo interativo, basta entrar no seguinte link: [Smart Room](https://www.figma.com/design/nnneG7MvcCWrjghrtlv3r7/SmartRoom?node-id=98-272&t=I1Jfo7rR6IUTJgKQ-1).
+
+Ao abrir a página, clique no botão Play localizado no canto superior direito da interface do Figma. Isso permitirá a navegação pelo protótipo como se estivesse utilizando o sistema real, facilitando testes de usabilidade e coleta de feedback.
+
+<div align="center">
+  <sub>FIGURA 15 - Acesse o protótipo clicando no botão de play</sub><br>
+  <img src= "./assets/prototype.png" width="100%"
+  alt="Prototype"><br>
+  <sup>Fonte: Material produzido pela autora, 2025</sup>
+</div>
+
+O protótipo de alta fidelidade permite uma visualização clara e realista de como o Smart Room será entregue aos usuários finais. Essa etapa é essencial para identificar possíveis melhorias na interface, garantindo que a experiência do usuário seja fluida e coerente com os objetivos do projeto. A partir desse modelo, será possível avançar para a fase de desenvolvimento com maior segurança e alinhamento entre equipe e público-alvo.
 
 ### 3.6. WebAPI e endpoints (Semana 05)
 
-*Utilize um link para outra página de documentação contendo a descrição completa de cada endpoint. Ou descreva aqui cada endpoint criado para seu sistema.*  
+A API desenvolvida para o sistema **Smart Room** segue a arquitetura RESTful e é responsável por gerenciar os dados de alunos, reservas, salas disponíveis, cancelamentos e autenticação. Abaixo estão descritos os principais endpoints organizados por módulo, incluindo o método HTTP utilizado e a função de cada rota.
+
+#### Alunos (`/alunos`)
+- `POST /alunos`  
+  Cadastra um novo aluno no sistema.
+- `GET /alunos`  
+  Retorna a lista de todos os alunos cadastrados.
+- `GET /alunos/:id/reservas`  
+  Lista todas as reservas associadas a um aluno específico.
+
+#### Reservas (`/reservas`)
+- `POST /reservas`  
+  Cria uma nova reserva de sala.
+- `GET /reservas`  
+  Lista todas as reservas registradas.
+- `PUT /reservas/:id`  
+  Atualiza os dados de uma reserva específica.
+- `DELETE /reservas/:id`  
+  Remove uma reserva existente do sistema.
+
+#### Salas Disponíveis (`/salas`)
+- `POST /salas`  
+  Adiciona uma nova sala disponível ao sistema.
+- `GET /salas`  
+  Lista todas as salas disponíveis para reserva.
+- `PUT /salas/:id`  
+  Atualiza as informações de uma sala específica.
+- `DELETE /salas/:id`  
+  Remove uma sala do sistema.
+
+#### Cancelamentos (`/cancelamentos`)
+- `POST /cancelamentos`  
+  Registra o cancelamento de uma reserva.
+- `GET /cancelamentos`  
+  Lista todos os cancelamentos realizados.
+
+#### Login (`/login`)
+- `POST /login`  
+  Realiza a autenticação de um usuário/aluno no sistema.
+
+---
 
 ### 3.7 Interface e Navegação (Semana 07)
 
