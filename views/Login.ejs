@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <%- include('partials/head', { title: 'Smart Room' }) %>
+    <link rel="stylesheet" href="/css/paginaLogin.css">
+</head>
+<body>
+    <div id="container">
+        <h1>Entre no Smart Room</h1>
+        <form action="/login" method="POST">
+            <input type="text" name="matricula" placeholder="MATRÍCULA" required>
+            <input type="password" name="senha" placeholder="SENHA" required>
+            <button type="submit">LOGIN</button>
+        </form>
+        <a href="/cadastro">Ainda não tem cadastro?</a>
+    </div>
+</body>
+</html>

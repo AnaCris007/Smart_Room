@@ -1,0 +1,118 @@
+/* Remove padding e margem padrão, define tamanho da tela */
+html, body {
+    padding: 0;
+    margin: 0;
+    width: 100vw;
+    height: 100vh;
+    /* REMOVIDO overflow: hidden para permitir scroll */
+    /* overflow: hidden; */
+    overscroll-behavior: contain;
+    
+    /* Centraliza conteúdo vertical e horizontalmente */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    /* Fundo da página */
+    background-image: url('/assets/fundoSala.png');
+    background-size: cover;
+}
+
+/* Container principal */
+#container {
+    width: 50vw;
+    height: auto;
+    margin-top: -10px;
+    background-color: #134A94;
+    padding-top: 15px;
+    padding-bottom: 20px;
+    border-radius: 15px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 15px;
+}
+
+/* Formulário */
+form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 32px; /* Espaçamento entre inputs */
+    width: 100%;
+}
+
+/* Título */
+h1 {
+    font: 3vw Poppins, sans-serif;
+    font-weight: bolder;
+    color: azure;
+    margin: 0; /* Remove margens */
+    padding: 0; /* Remove paddings */
+}
+
+/* Inputs do formulário */
+input {
+    position: relative;
+    width: 80%;
+    height: 60px;
+    border-radius: 20px;
+    background-color: #D9D9D9;
+    border: none;
+    padding-left: 20px;
+    font-size: 22px;
+}
+
+/* Placeholder estilizado */
+input::placeholder {
+    font: 20px Poppins;
+    top: 5px;
+    transform: translateY(-10px);
+    font-weight: 400;
+    font-style: oblique;
+    color: #000000;
+}
+
+/* Linha dos inputs turma e ano */
+.input-linha {
+    display: flex;
+    width: 83%;
+    justify-content: space-between;
+    gap: 25px;
+    padding: 0;
+    margin: 0;
+}
+
+/* Largura do input turma */
+#turma {
+    width: 58%;
+}
+
+/* Largura do input ano */
+#ano {
+    width: 38%;
+}
+
+/* Botão padrão */
+.button-padrao {
+    border-radius: 20px;
+    width: 15vw;
+    height: 4vw;
+    font-family: 'Poppins';
+    font-weight: bold;
+    font-size: 32px;
+    background-color: #2800ED;
+    color: white;
+    margin-top: -15px;
+    border: none;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+/* Efeito hover no botão */
+.button-padrao:hover {
+    background-color: #1f00b8;
+    border: 1px solid white;
+}

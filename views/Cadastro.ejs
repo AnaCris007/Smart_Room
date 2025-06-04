@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <%- include('partials/head', { title: 'Smart Room' }) %>
+    <link rel="stylesheet" href="css/PaginaCadastro.css">
+</head>
+<body>
+    <!-- Cabeçalho -->
+    <div class="header">
+        <div class="logo">SR</div>
+        <div class="header-title">Smart Room</div>
+    </div>
+    
+    <!-- Setas de Navegação -->
+    <div class="nav-arrows">
+        <div class="nav-arrow" onclick="goBack()">
+            <svg fill="none" viewBox="0 0 24 24">
+                <path d="M15 18l-6-6 6-6" stroke="currentColor"/>
+            </svg>
+        </div>
+        <div class="nav-arrow" onclick="refresh()">
+            <svg fill="none" viewBox="0 0 24 24">
+                <path d="M1 4v6h6M23 20v-6h-6" stroke="currentColor"/>
+                <path d="m21 10a9 9 0 1 1-6.219-8.56" stroke="currentColor"/>
+            </svg>
+        </div>
+    </div>
+
+    <!-- Conteúdo Principal -->
+    <div id="container">
+        <h1>Cadastre-se:</h1>
+        
+        <form id="cadastroForm">
+            <input type="text" id="matricula" name="matricula" placeholder="MATRÍCULA" required>
+            
+            <input type="text" id="nome" name="nome" placeholder="NOME" required>
+            
+            <div class="input-linha">
+                <input type="text" id="turma" name="turma" placeholder="TURMA" required>
+                <!-- Input para ano, tipo número -->
+                <input type="number" id="ano" name="ano" placeholder="ANO" min="1" max="12" required>
+            </div>
+            
+            <input type="password" id="senha" name="senha" placeholder="SENHA" required>
+            
+            <input type="password" id="confirmarSenha" name="confirmarSenha" placeholder="CONFIRMAR SENHA" required>
+            
+            <button type="submit" class="button-padrao">FINALIZAR</button>
+        </form>
+    </div>
+</body>
+</html>
