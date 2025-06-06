@@ -1,95 +1,480 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
 body {
-  font-family: 'Poppins', sans-serif;
-  background-color: #72AAFF;
-  margin: 0;
-  padding: 0;
-  color: #000;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;
+    min-height: 100vh;
+    background: linear-gradient(180deg, #87CEEB 0%, #4682B4 100%);
 }
 
-.conteudo-principal {
-  padding: 40px 60px;
-  margin-left: 20px;
+/* Conteúdo principal */
+.container {
+    padding: 32px 24px;
+    position: relative; /* Para servir de referência ao menu hamburguer absoluto */
 }
 
-.saudacao {
-  font-size: 32px;
-  font-weight: bold;
-  color: #1a1a1a;
+/* Header com saudação e botão */
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 32px;
 }
 
-.topo-reservas {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin: 30px 0 20px 0;
+header h1 {
+    font-size: 60px;
+    font-weight: bold;
+    color: #000;
+    padding-left: 20px;
 }
 
-.subtitulo {
-  font-size: 22px;
-  font-weight: bold;
-  color: #1a1a1a;
+.nova-reserva {
+    background: #2800ED;
+    color: white;
+    border: none;
+    border-radius: 40px;
+    padding: 22px 48px;
+    font-weight: bold;
+    font-size: 22px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    transition: transform 0.2s;
+    box-shadow: 0 2px 12px #2800ED;;
 }
 
-.botao-nova-reserva {
-  background-color: #3000e0;
-  color: white;
-  border: none;
-  padding: 14px 24px;
-  font-size: 16px;
-  font-weight: bold;
-  border-radius: 30px;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  transition: background 0.3s ease;
+
+/* Linha horizontal para menu e título */
+.linha-menu-titulo {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    margin-bottom: 32px;
+    margin-top: 0;
+    width: 100%;
+    position: relative;
+    min-height: 60px;
 }
 
-.botao-nova-reserva:hover {
-  background-color: #1d00a8;
+/* Menu hamburguer alinhado ao topo à esquerda */
+.menu-hamburguer {
+    position: static;
+    margin-left: 0;
+    margin-right: 0;
+    top: auto;
+    left: auto;
+    z-index: 1000;
 }
 
-.icone-calendario::before {
-  content: "\1F4C5"; /* Emoji calendário como placeholder */
-  font-size: 18px;
+/* Título das reservas e mensagem nenhuma reserva */
+.titulo-reservas,
+.nenhuma-reserva-msg {
+    font-size: 40px;
+    font-weight: bold;
+    color: #000;
+    text-align: center;
+    margin: 0 0 32px 0;
+    padding: 0;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: static;
+    left: auto;
+    transform: none;
 }
 
-.container-reservas {
-  max-height: 480px;
-  overflow-y: auto;
-  background-color: #174A94;
-  border-radius: 10px;
-  padding: 20px;
-  color: white;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+/* Título das reservas */
+.titulo-reservas,
+.nenhuma-reserva-msg {
+    font-size: 40px;
+    font-weight: bold;
+    color: #000;
+    text-align: center;
+    margin: 0 0 32px 0;
+    padding: 0;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: static;
+    left: auto;
+    transform: none;
 }
 
-/* Scroll personalizado */
-.container-reservas::-webkit-scrollbar {
-  width: 8px;
-}
-.container-reservas::-webkit-scrollbar-thumb {
-  background-color: #888;
-  border-radius: 10px;
-}
-.container-reservas::-webkit-scrollbar-track {
-  background-color: #ddd;
+/* Botão nova reserva no topo direito, mais abaixo */
+.nova-reserva {
+    position: absolute;
+    right: 40px;
+    top: 48px; /* desce o botão */
+    z-index: 10;
+    background: #2800ED;;
+    color: white;
+    border: none;
+    border-radius: 40px;
+    padding: 22px 48px;
+    font-weight: bold;
+    font-size: 22px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    transition: transform 0.2s;
+    box-shadow: 0 2px 12px rgba(124, 58, 237, 0.3);
 }
 
-/* Responsividade */
-@media (max-width: 768px) {
-  .conteudo-principal {
-    padding: 20px;
-  }
+.nova-reserva:hover {
+    background: #2800ED;
+    transform: scale(1.07);
+}
 
-  .topo-reservas {
+.nova-reserva img {
+    width: 32px;
+    height: 32px;
+}
+
+/* Container centralizado */
+.reservas-wrapper {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+}
+
+/* Caixa de reservas */
+.caixa-reservas {
+    width: 100%;
+    max-width: 600px; /* aumente para ficar mais largo */
+    background: rgba(30, 64, 175, 0.85);
+    border-radius: 18px;
+    padding: 0 0 24px 0; /* padding inferior para espaçamento */
+    color: white;
+    max-height: 600px; /* aumente a altura máxima */
+    overflow-y: auto;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+    margin-bottom: 32px;
+}
+
+/* Item individual de reserva */
+.item-reserva {
+    padding: 32px 36px 28px 36px;
+    border-bottom: 1px solid rgba(59, 130, 246, 0.4);
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+}
+
+.item-reserva:last-child {
+    border-bottom: none;
+}
+
+/* Alinhamento dos ícones e textos */
+.item-reserva p {
+    display: flex;
+    align-items: center;
+    font-size: 1.35rem;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 500;
+    margin: 0;
+    color: #fff;
+    gap: 16px;
+}
+
+.item-reserva img {
+    width: 32px;
+    height: 32px;
+    margin-right: 12px;
+}
+
+/* Botão cancelar centralizado e menor */
+.cancelar-btn {
+    background: #2800ED;
+    color: white;
+    border: none;
+    border-radius: 12px;
+    padding: 14px 0;
+    font-weight: bold;
+    font-size: 20px;
+    cursor: pointer;
+    margin: 24px auto 0 auto;
+    width: 60%;
+    display: block;
+    transition: background-color 0.2s, transform 0.2s;
+    box-shadow: 0 2px 8px rgba(59, 130, 246, 0.15);
+    letter-spacing: 1px;
+}
+
+.cancelar-btn:hover {
+    background: #2800ED;
+    transform: scale(1.07);
+}
+
+/* Estado sem reservas */
+.sem-reservas {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-top: 40px;
+    width: 100%;
+    min-height: 250px;
+    text-align: center;
+    gap: 24px;
+}
+
+.nenhuma-reserva-msg {
+    font-size: 35px;
+    color: #000;
+    font-family: 'Poppins';
+    margin-bottom: 8px;
+    font-weight: 800;
+}
+
+.container-sem-reservas {
+    width: 100%;
+    max-width: 420px;
+    background: rgba(30, 64, 175, 0.85);
+    border-radius: 12px;
+    padding: 48px 32px;
+    text-align: center;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+}
+
+.icone-vazio {
+    font-size: 48px;
+    margin-bottom: 24px;
+}
+
+.texto-vazio {
+    color: white;
+    font-size: 18px;
+    margin-bottom: 32px;
+    font-weight: 600;
+}
+
+.grande-reserva-btn {
+    background: #2800ED;
+    color: white;
+    font-size: 20px;
+    font-weight: bold;
+    border: none;
+    border-radius: 30px;
+    padding: 20px 40px;
+    cursor: pointer;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    transition: background-color 0.2s, transform 0.2s;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.grande-reserva-btn img {
+    width: 24px;
+    height: 24px;
+}
+
+.grande-reserva-btn:hover {
+    background: #2800ED;
+    transform: scale(1.07);
+}
+
+/* Scrollbar personalizada */
+.caixa-reservas::-webkit-scrollbar {
+    width: 6px;
+}
+
+.caixa-reservas::-webkit-scrollbar-thumb {
+    background: #3B82F6;
+    border-radius: 3px;
+}
+
+.caixa-reservas::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+/* Estado oculto */
+.hidden {
+    display: none !important;
+}
+
+.sem-reservas {
+  text-align: center;
+  margin-top: 40px; /* Reduzido para subir o botão também nesta regra */
+}
+
+/* Pop-up de confirmação de cancelamento */
+.popup-cancelar {
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(0,0,0,0.25);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 2000;
+}
+
+.popup-box {
+    background: #72aaff;
+    border: 3px solid #222;
+    border-radius: 16px;
+    padding: 32px 32px 28px 32px;
+    min-width: 320px;
+    min-height: 120px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.18);
+}
+
+.popup-titulo {
+    font-size: 2rem;
+    font-weight: bold;
+    color: #111;
+    margin-bottom: 32px;
+    text-align: center;
+    font-family: 'Poppins', Arial, sans-serif;
+}
+
+.popup-botoes {
+    display: flex;
+    gap: 32px;
+    justify-content: center;
+    width: 100%;
+}
+
+.popup-btn {
+    background: #2800ED;
+    color: #fff;
+    font-size: 1.3rem;
+    font-weight: bold;
+    border: none;
+    border-radius: 16px;
+    padding: 12px 38px;
+    cursor: pointer;
+    box-shadow: 0 2px 8px rgba(40,0,237,0.18);
+    transition: transform 0.18s;
+    outline: none;
+}
+
+.popup-btn:hover {
+    transform: scale(1.08);
+    background: #1f00b8;
+}
+
+/* Pop-up de reserva cancelada */
+.popup-cancelada {
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(0,0,0,0.18);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 3000;
+}
+
+.popup-cancelada-box {
+    background: #72aaff;
+    border: 4px solid #111;
+    border-radius: 40px;
+    min-width: 420px;
+    min-height: 180px;
+    padding: 32px 32px 28px 32px;
+    display: flex;
     flex-direction: column;
     align-items: flex-start;
-    gap: 15px;
-  }
+    position: relative;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.18);
+}
 
-  .botao-nova-reserva {
-    width: 100%;
+.popup-cancelada-fechar {
+    position: absolute;
+    left: 16px;
+    top: 16px;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    border: none;
+    background: #222;
+    color: #fff;
+    font-size: 1.5rem;
+    font-weight: bold;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
     justify-content: center;
-  }
+    transition: background 0.18s, transform 0.18s;
+}
+.popup-cancelada-fechar:hover {
+    background: #444;
+    transform: scale(1.08);
+}
+
+.popup-cancelada-titulo {
+    font-size: 2.5rem;
+    font-weight: 900;
+    color: #111;
+    margin: 0 auto;
+    align-self: center;
+    font-family: 'Poppins', Arial, sans-serif;
+    margin-top: 32px;
+    letter-spacing: 1px;
+    text-align: center;
+}
+
+/* Responsivo */
+@media (max-width: 600px) {
+    .popup-cancelada-box {
+        min-width: 90vw;
+        padding: 18px 8px 18px 8px;
+    }
+    .popup-cancelada-titulo {
+        font-size: 1.3rem;
+        margin-top: 24px;
+    }
+    .popup-cancelada-fechar {
+        width: 36px;
+        height: 36px;
+        font-size: 1.5rem;
+        left: 8px;
+        top: 8px;
+    }
+}
+
+@media (max-width: 900px) {
+    .titulo-reservas,
+    .nenhuma-reserva-msg {
+        font-size: 24px;
+        /* mantém centralizado */
+    }
+    .linha-menu-titulo {
+        min-height: 36px;
+        gap: 12px;
+    }
+}
+
+@media (max-width: 768px) {
+    .titulo-reservas,
+    .nenhuma-reserva-msg {
+        font-size: 18px;
+        /* mantém centralizado */
+    }
+    .linha-menu-titulo {
+        min-height: 28px;
+        gap: 8px;
+    }
+    .menu-hamburguer {
+        left: 8px;
+        top: 8px;
+    }
+    .nova-reserva {
+        right: 5px;
+        top: 24px;
+        font-size: 16px;
+        padding: 14px 20px;
+        border-radius: 30px;
+        gap: 8px;
+    }
 }

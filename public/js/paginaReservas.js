@@ -1,132 +1,154 @@
-document.addEventListener('DOMContentLoaded', () => {
-    const reservasListDiv = document.getElementById('reservasList');
-    const novaReservaBtn = document.querySelector('.nova-reserva-btn');
+document.addEventListener("DOMContentLoaded", async function () {
+  const caixa = document.getElementById("caixa-reservas");
+  const semReservas = document.getElementById("sem-reservas");
+  const novaReservaBtn = document.getElementById("botaoNovaReserva");
+  const tituloReservas = document.getElementById("tituloReservas");
+  const nenhumaReservaMsg = document.getElementById("nenhumaReservaMsg");
 
-    // Mock data - replace with actual data from your database or passed via EJS
-    const mockReservas = [
-        {
-            id: 1,
-            sala: 'A-02',
-            data: '15/05',
-            horario: 'das 15h às 16h'
-        },
-        {
-            id: 2,
-            sala: 'H-08',
-            data: '17/05',
-            horario: 'das 8h às 10h'
-        },
-        {
-            id: 3,
-            sala: 'C-12',
-            data: '18/05',
-            horario: 'das 10h às 11h'
-        },
-        {
-            id: 4,
-            sala: 'LabInf-01',
-            data: '19/05',
-            horario: 'das 14h às 17h'
-        }
-        // Add more reservations as needed
-    ];
+  // Busca matrícula do aluno logado
+  const matricula = localStorage.getItem('matricula');
+  if (!matricula) {
+    window.location.href = '/login';
+    return;
+  }
 
-    function renderReservas(reservas) {
-        if (!reservasListDiv) {
-            console.error('Element with ID "reservasList" not found.');
-            return;
-        }
-        reservasListDiv.innerHTML = ''; // Clear existing static or old items
-
-        if (reservas.length === 0) {
-            reservasListDiv.innerHTML = '<p class="empty-message">Nenhuma reserva encontrada.</p>';
-            return;
-        }
-
-        reservas.forEach(reserva => {
-            const reservaItem = document.createElement('div');
-            reservaItem.classList.add('reserva-item');
-            reservaItem.setAttribute('data-id', reserva.id);
-
-            reservaItem.innerHTML = `
-                <div class="details">
-                    <p><i class="material-icons">meeting_room</i> Sala: ${reserva.sala}</p>
-                    <p><i class="material-icons">calendar_today</i> Data: ${reserva.data}</p>
-                    <p><i class="material-icons">schedule</i> Horário: ${reserva.horario}</p>
-                </div>
-                <button class="action-button cancelar-btn">CANCELAR</button>
-            `;
-            reservasListDiv.appendChild(reservaItem);
-        });
-
-        // Add event listeners to new cancel buttons
-        addCancelEventListeners();
+  // Busca reservas do aluno logado
+  let reservas = [];
+  try {
+    const resp = await fetch(`/alunos/${matricula}/reservas`);
+    if (resp.ok) {
+      reservas = await resp.json();
     }
+  } catch (err) {
+    reservas = [];
+  }
 
-    function addCancelEventListeners() {
-        const cancelarBtns = document.querySelectorAll('.cancelar-btn');
-        cancelarBtns.forEach(btn => {
-            btn.addEventListener('click', (event) => {
-                const reservaItem = event.target.closest('.reserva-item');
-                const reservaId = reservaItem.getAttribute('data-id');
-                console.log(`Cancelar reserva ID: ${reservaId}`);
-                // Here you would add logic to actually cancel the reservation
-                // (e.g., make an API call to your backend)
-                // For now, we'll just remove it from the view as an example
-                reservaItem.remove(); 
-                
-                // You might want to re-fetch or update your mockReservas array and re-render
-                // or call a function to check if the list is empty and display a message
-                checkIfReservasListEmpty();
+  // Limpa o container antes de renderizar
+  caixa.innerHTML = "";
+
+  if (!reservas || reservas.length === 0) {
+    caixa.style.display = "none";
+    semReservas.style.display = "flex";
+    novaReservaBtn.style.display = "none";
+    if (tituloReservas) tituloReservas.style.display = "none";
+    if (nenhumaReservaMsg) nenhumaReservaMsg.style.display = "flex";
+  } else {
+    semReservas.style.display = "none";
+    caixa.style.display = "block";
+    novaReservaBtn.style.display = "inline-flex";
+    if (tituloReservas) tituloReservas.style.display = "flex";
+    if (nenhumaReservaMsg) nenhumaReservaMsg.style.display = "none";
+
+    reservas.forEach((reserva) => {
+      const div = document.createElement("div");
+      div.classList.add("item-reserva");
+
+      // Formatação de data e horário
+      let dataFormatada = reserva.dia || reserva.data || '';
+      if (dataFormatada && dataFormatada.includes('T')) {
+        dataFormatada = new Date(dataFormatada).toLocaleDateString('pt-BR');
+      }
+      let horarioFormatado = reserva.horario || reserva.inicio || '';
+      if (horarioFormatado && horarioFormatado.length > 5) {
+        horarioFormatado = horarioFormatado.slice(0,5);
+      }
+
+      div.innerHTML = `
+        <p><img src="/assets/Icons/porta.png" alt="Sala" />Sala: ${reserva.id_salas_dispo || reserva.sala || ''}</p>
+        <p><img src="/assets/Icons/calendario.png" alt="Data" />Data: ${dataFormatada}</p>
+        <p><img src="/assets/Icons/relogio.png" alt="Horário" />Horário: ${horarioFormatado}</p>
+        <button class="cancelar-btn">CANCELAR</button>
+      `;
+
+      caixa.appendChild(div);
+    });
+  }
+
+  // Ação do botão grande
+  const botaoGrande = document.querySelector(".grande-reserva-btn");
+  if (botaoGrande) {
+    botaoGrande.addEventListener("click", () => {
+      window.location.href = "/pagina-de-nova-reserva";
+    });
+  }
+
+  // Ação do botão do topo
+  if (novaReservaBtn) {
+    novaReservaBtn.addEventListener("click", () => {
+      window.location.href = "/pagina-de-nova-reserva";
+    });
+  }
+
+  // Função para mostrar o pop-up de confirmação
+  function showPopupCancelar(idReserva, onConfirm) {
+    const popup = document.getElementById('popup-cancelar');
+    popup.style.display = 'flex';
+
+    const btnSim = popup.querySelector('.popup-btn-sim');
+    const btnNao = popup.querySelector('.popup-btn-nao');
+
+    btnSim.onclick = null;
+    btnNao.onclick = null;
+
+    btnSim.onclick = () => {
+      popup.style.display = 'none';
+      if (onConfirm) onConfirm();
+    };
+    btnNao.onclick = () => {
+      popup.style.display = 'none';
+    };
+  }
+
+  // Função para mostrar o pop-up de reserva cancelada
+  function showPopupCancelada() {
+    const popup = document.getElementById('popup-cancelada');
+    popup.style.display = 'flex';
+    const btnFechar = document.getElementById('fecharCancelada');
+    if (btnFechar) {
+      btnFechar.onclick = () => {
+        popup.style.display = 'none';
+      };
+    }
+    // Fecha ao clicar fora do box
+    popup.onclick = (e) => {
+      if (e.target === popup) popup.style.display = 'none';
+    };
+  }
+
+  // Após renderizar as reservas, adicione o evento ao botão cancelar
+  if (reservas && reservas.length > 0) {
+    const cancelarBtns = document.querySelectorAll('.cancelar-btn');
+    cancelarBtns.forEach((btn, idx) => {
+      btn.onclick = (e) => {
+        e.preventDefault();
+        const reserva = reservas[idx];
+        showPopupCancelar(reserva.id_reservas, async () => {
+          try {
+            const resp = await fetch('/api/cancelamentos', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ id_reservas: reserva.id_reservas })
             });
+            if (resp.ok) {
+              // Remove a reserva da lista sem recarregar a página
+              btn.closest('.item-reserva').remove();
+              showPopupCancelada();
+              // Se não houver mais reservas, atualize a tela
+              if (document.querySelectorAll('.item-reserva').length === 0) {
+                caixa.style.display = "none";
+                semReservas.style.display = "flex";
+                novaReservaBtn.style.display = "none";
+                if (tituloReservas) tituloReservas.style.display = "none";
+                if (nenhumaReservaMsg) nenhumaReservaMsg.style.display = "flex";
+              }
+            } else {
+              alert('Erro ao cancelar reserva.');
+            }
+          } catch {
+            alert('Erro ao cancelar reserva.');
+          }
         });
-    }
-
-    function checkIfReservasListEmpty() {
-        if (reservasListDiv && reservasListDiv.children.length === 0) {
-            reservasListDiv.innerHTML = '<p class="empty-message">Nenhuma reserva encontrada.</p>';
-        }
-    }
-
-    if (novaReservaBtn) {
-        novaReservaBtn.addEventListener('click', () => {
-            console.log('Botão NOVA RESERVA clicado');
-            // Logic for new reservation (e.g., open a modal or navigate to another page)
-            alert('Funcionalidade NOVA RESERVA a ser implementada!');
-        });
-    }
-
-    // Initial render of reservations
-    // In a full MVC app, this data might be embedded in the EJS by the server,
-    // or fetched via an API call.
-    renderReservas(mockReservas);
-
-    // Example: Event listeners for top bar buttons (optional)
-    const backButton = document.querySelector('.back-button');
-    const refreshButton = document.querySelector('.refresh-button');
-    const hamburgerButton = document.querySelector('.hamburger-menu');
-
-    if(backButton) {
-        backButton.addEventListener('click', () => {
-            console.log('Back button clicked');
-            // window.history.back(); // Uncomment to enable browser back functionality
-            alert('Botão Voltar clicado!');
-        });
-    }
-
-    if(refreshButton) {
-        refreshButton.addEventListener('click', () => {
-            console.log('Refresh button clicked');
-            // window.location.reload(); // Uncomment to enable page reload
-            alert('Botão Recarregar clicado!');
-        });
-    }
-
-    if(hamburgerButton) {
-        hamburgerButton.addEventListener('click', () => {
-            console.log('Hamburger menu clicked');
-            alert('Menu Hamburger clicado! Implementar navegação.');
-        });
-    }
-
-}); 
+      };
+    });
+  }
+});

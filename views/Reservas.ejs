@@ -1,34 +1,58 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <%- include('partials/head', { title: 'Reservas - Smart Room' }) %>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Suas Reservas</title>
   <link rel="stylesheet" href="/css/paginaReservas.css">
 </head>
 <body>
-  <div class="recipiente">
+  <div class="container">
+      <header>
+          <h1>Olá, Ana:</h1>
+          <button id="botaoNovaReserva" class="nova-reserva" style="display: none;">
+              <img src="/assets/Icons/+calendario.png" alt="Icone Nova Reserva">
+              NOVA RESERVA
+          </button>
+      </header>
 
-    <!-- Menu hambúrguer já criado -->
-    <%- include('partials/menuHamburguer') %>
+      <!-- Inclui o menu hamburguer -->
+      <%- include('partials/menuHamburguer') %>
 
-    <!-- Saudação e botão -->
-    <main class="conteudo-principal">
-      <h1 class="saudacao">Olá, Ana:</h1>
+      <h2 id="tituloReservas" class="titulo-reservas" style="display: none;">Suas reservas são:</h2>
+      <div id="nenhumaReservaMsg" class="nenhuma-reserva-msg" style="display: none;">Você não tem nenhuma reserva</div>
 
-      <div class="topo-reservas">
-        <h2 class="subtitulo">Suas reservas são:</h2>
-        <button class="botao-nova-reserva">
-          <i class="icone-calendario"></i> NOVA RESERVA
+      <!-- Container centralizado para as reservas -->
+      <div class="reservas-wrapper">
+          <!-- Caixa de reservas (exibida se houver reservas) -->
+          <div id="caixa-reservas" class="caixa-reservas">
+              <!-- Conteúdo será preenchido pelo JavaScript -->
+          </div>
+      </div>
+
+      <!-- Estado quando não há reservas -->
+      <div id="sem-reservas" class="sem-reservas">
+        <button class="grande-reserva-btn">
+          <img src="/assets/Icons/+calendario.png" alt="Ícone calendário" />
+          FAÇA UMA RESERVA
         </button>
       </div>
-
-      <!-- Container que será populado dinamicamente -->
-      <div class="container-reservas" id="listaReservas">
-        <!-- Reservas serão carregadas aqui com JS -->
-      </div>
-
-    </main>
   </div>
-
-  <script src="/js/carregarReservas.js"></script>
+  <div id="popup-cancelar" class="popup-cancelar" style="display:none;">
+    <div class="popup-box">
+      <div class="popup-titulo">TEM CERTEZA?</div>
+      <div class="popup-botoes">
+        <button class="popup-btn popup-btn-sim">SIM</button>
+        <button class="popup-btn popup-btn-nao">NÃO</button>
+      </div>
+    </div>
+  </div>
+  <div id="popup-cancelada" class="popup-cancelada" style="display:none;">
+    <div class="popup-cancelada-box">
+      <button class="popup-cancelada-fechar" id="fecharCancelada">&times;</button>
+      <div class="popup-cancelada-titulo">RESERVA CANCELADA!</div>
+    </div>
+  </div>
+  <script src="/js/paginaReservas.js"></script>
 </body>
 </html>

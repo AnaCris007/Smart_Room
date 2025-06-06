@@ -3,10 +3,11 @@ const pool = require('../config/db'); // Importa o pool de conexão com o banco 
 // Função para verificar se as credenciais de login são válidas
 const verificarLogin = async (matricula) => {
   const query = `
-    SELECT * FROM alunos
-    WHERE matricula = $1;  -- Busca o aluno com matrícula correspondente
+    SELECT matricula, nome, turma, ano, email, senha_aluno
+    FROM alunos
+    WHERE matricula = $1;
   `;
-  return pool.query(query, [matricula]);  // Executa a query com os parâmetros fornecidos
+  return pool.query(query, [matricula]);
 };
 
 module.exports = {

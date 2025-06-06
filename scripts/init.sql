@@ -55,6 +55,6 @@ CREATE TABLE IF NOT EXISTS Cancelamentos (
 id_cancelar SERIAL PRIMARY KEY,
 id_reservas INT NOT NULL,
 dia_cancelar DATE NOT NULL,
-FOREIGN KEY (id_reservas) REFERENCES Reservas(id_reservas)
+FOREIGN KEY (id_reservas) REFERENCES Reservas(id_reservas) ON DELETE CASCADE
 );
 

@@ -14,7 +14,6 @@ body {
 
 .recipiente {
     width: 100%;
-    min-height: 100vh;
     position: relative;
 }
 
@@ -34,9 +33,8 @@ body {
 
 /* Menu Hambúrguer */
 .menu-hamburguer {
-    position: fixed;
-    top: 24px; /* Reduzido para ficar mais próximo do topo */
-    left: 50px;
+    position: absolute;
+    left: 25px;
     z-index: 1000;
     cursor: pointer;
     padding: 12px;
@@ -56,6 +54,7 @@ body {
 .icone-menu {
     width: 24px;
     height: 18px;
+    scale: 1.5;
     position: relative;
     display: flex;
     flex-direction: column;
