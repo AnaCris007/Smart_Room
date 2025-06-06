@@ -1,4 +1,5 @@
 const LoginModel = require('../models/LoginModel');
+const bcrypt = require('bcrypt');
 
 // Controlador para realizar o login do aluno usando matrícula e senha
 const realizarLogin = async (req, res) => {
@@ -11,7 +12,7 @@ const realizarLogin = async (req, res) => {
 
   try {
     // Chama o model para verificar as credenciais no banco de dados
-    const resultado = await LoginModel.verificarLogin(matricula, senha_aluno);
+    const resultado = await LoginModel.verificarLogin(matricula);
 
     // Se nenhum usuário for encontrado, retorna erro 401 (Não autorizado)
     if (resultado.rows.length === 0) {
@@ -19,6 +20,11 @@ const realizarLogin = async (req, res) => {
     }
 
     const aluno = resultado.rows[0];
+    const senhaCorreta = await bcrypt.compare(senha_aluno, aluno.senha_aluno);
+
+    if (!senhaCorreta) {
+      return res.status(401).json({ erro: 'Matrícula ou senha inválidos.' });
+    }
 
     // Retorna uma resposta com os dados relevantes do aluno (sem a senha)
     res.status(200).json({

@@ -29,6 +29,9 @@ app.use('/', pageRoutes);
 // Configura o uso das rotas importadas em todas as URLs ('/')
 app.use('/api', routes);
 
+const alunosRoutes = require('./routes/AlunosRoutes');
+app.use('/alunos', alunosRoutes);
+
 // Inicializa o servidor, fazendo ele escutar na porta definida
 app.listen(port, () => {
   console.log(`Servidor rodando na porta ${port}`);

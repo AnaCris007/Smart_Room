@@ -1,34 +1,42 @@
-const pool = require('../config/db'); // Importa o pool de conexão com o banco de dados
+const pool = require('../config/db'); // conexão com o banco de dados
 
-// Função para cadastrar um novo aluno no banco
+// Verifica se a matrícula já existe
+const verificarMatriculaExiste = async (matricula) => {
+  const query = `SELECT 1 FROM alunos WHERE matricula = $1;`;
+  const result = await pool.query(query, [matricula]);
+  return result.rowCount > 0; // true se existir, false se não
+};
+
+// Cadastra um novo aluno no banco
 const cadastrarAluno = async ({ matricula, nome, turma, ano, senha_aluno, email }) => {
   const query = `
     INSERT INTO alunos (matricula, nome, turma, ano, senha_aluno, email)
     VALUES ($1, $2, $3, $4, $5, $6)
-    RETURNING *;  -- Retorna os dados do aluno recém-cadastrado
+    RETURNING *;
   `;
   const values = [matricula, nome, turma, ano, senha_aluno, email];
-  return pool.query(query, values);  // Executa a query passando os valores
+  return pool.query(query, values);
 };
 
-// Função para listar todos os alunos ordenados por nome
+// Lista todos os alunos
 const listarAlunos = () => {
   const query = `SELECT * FROM alunos ORDER BY nome;`;
-  return pool.query(query);  // Executa a query e retorna todos os alunos
+  return pool.query(query);
 };
 
-// Função para listar todas as reservas feitas por um aluno específico, identificando pela matrícula
+// Lista todas as reservas feitas por um aluno (usando matrícula)
 const listarReservasPorAlunoId = (matricula) => {
   const query = `
     SELECT r.*
     FROM reservas r
-    WHERE r.matricula_alunos = $1  -- Filtra reservas pela matrícula do aluno
-    ORDER BY r.dia DESC;  -- Ordena as reservas da mais recente para a mais antiga
+    WHERE r.matricula_alunos = $1
+    ORDER BY r.dia DESC;
   `;
-  return pool.query(query, [matricula]);  // Executa a query com o parâmetro da matrícula
+  return pool.query(query, [matricula]);
 };
 
 module.exports = {
+  verificarMatriculaExiste,
   cadastrarAluno,
   listarAlunos,
   listarReservasPorAlunoId,

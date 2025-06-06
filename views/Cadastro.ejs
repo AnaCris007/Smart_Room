@@ -34,21 +34,105 @@
         
         <form id="cadastroForm">
             <input type="text" id="matricula" name="matricula" placeholder="MATRÍCULA" required>
-            
             <input type="text" id="nome" name="nome" placeholder="NOME" required>
-            
             <div class="input-linha">
                 <input type="text" id="turma" name="turma" placeholder="TURMA" required>
-                <!-- Input para ano, tipo número -->
                 <input type="number" id="ano" name="ano" placeholder="ANO" min="1" max="12" required>
             </div>
-            
-            <input type="password" id="senha" name="senha" placeholder="SENHA" required>
-            
+            <input type="email" id="email" name="email" placeholder="EMAIL" required>
+            <input type="password" id="senha" name="senha_aluno" placeholder="SENHA" required>
             <input type="password" id="confirmarSenha" name="confirmarSenha" placeholder="CONFIRMAR SENHA" required>
-            
             <button type="submit" class="button-padrao">FINALIZAR</button>
         </form>
+        <div id="mensagemCadastro" style="display:none; margin-top:10px; max-width:80%;"></div>
     </div>
+    <script>
+        function mostrarMensagem(msg, sucesso = false) {
+            const mensagemDiv = document.getElementById('mensagemCadastro');
+            mensagemDiv.style.display = 'block';
+            mensagemDiv.textContent = msg;
+            mensagemDiv.style.background = sucesso ? '#2ecc40' : '#ffdddd';
+            mensagemDiv.style.color = sucesso ? '#fff' : '#b20000';
+            mensagemDiv.style.border = sucesso ? '2px solid #27ae60' : '2px solid #b20000';
+            mensagemDiv.style.padding = '12px 18px';
+            mensagemDiv.style.borderRadius = '8px';
+            mensagemDiv.style.fontWeight = 'bold';
+            mensagemDiv.style.textAlign = 'center';
+        }
+        function esconderMensagem() {
+            const mensagemDiv = document.getElementById('mensagemCadastro');
+            mensagemDiv.style.display = 'none';
+        }
+
+        document.getElementById('cadastroForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            esconderMensagem();
+            const mensagemDiv = document.getElementById('mensagemCadastro');
+            const matricula = document.getElementById('matricula').value.trim();
+            const nome = document.getElementById('nome').value.trim();
+            const turma = document.getElementById('turma').value.trim();
+            const ano = document.getElementById('ano').value.trim();
+            const email = document.getElementById('email').value.trim();
+            const senha = document.getElementById('senha').value;
+            const confirmarSenha = document.getElementById('confirmarSenha').value;
+
+            // Validações de frontend
+            if (!/^\d+$/.test(matricula)) {
+                mostrarMensagem('A matrícula deve conter apenas números.');
+                return;
+            }
+            if (!nome) {
+                mostrarMensagem('O nome não pode estar vazio.');
+                return;
+            }
+            if (!turma) {
+                mostrarMensagem('A turma não pode estar vazia.');
+                return;
+            }
+            if (!/^\d+$/.test(ano) || parseInt(ano) < 1 || parseInt(ano) > 12) {
+                mostrarMensagem('Ano deve ser um número entre 1 e 12.');
+                return;
+            }
+            if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+                mostrarMensagem('Email inválido.');
+                return;
+            }
+            if (!senha || senha.length < 4) {
+                mostrarMensagem('A senha deve ter pelo menos 4 caracteres.');
+                return;
+            }
+            if (senha !== confirmarSenha) {
+                mostrarMensagem('As senhas não coincidem.');
+                return;
+            }
+
+            const formData = {
+                matricula,
+                nome,
+                turma,
+                ano,
+                email,
+                senha_aluno: senha
+            };
+            try {
+                const resp = await fetch('/alunos', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(formData)
+                });
+                if (resp.ok) {
+                    mostrarMensagem('Cadastro realizado com sucesso! Redirecionando para login...', true);
+                    setTimeout(() => { window.location.href = '/login'; }, 1500);
+                } else {
+                    const erro = await resp.json();
+                    mostrarMensagem(erro.erro || 'Erro ao cadastrar.');
+                }
+            } catch (err) {
+                mostrarMensagem('Erro ao conectar ao servidor.');
+            }
+        });
+        function goBack() { window.history.back(); }
+        function refresh() { window.location.reload(); }
+    </script>
 </body>
 </html>
