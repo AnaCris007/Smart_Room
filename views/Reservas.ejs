@@ -1,28 +1,34 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login Page</title>
+  <%- include('partials/head', { title: 'Reservas - Smart Room' }) %>
+  <link rel="stylesheet" href="/css/paginaReservas.css">
 </head>
 <body>
-    <h2>Welcome!</h2>
-    <form id="loginForm">
-        <label for="username">Username:</label>
-        <input type="text" id="username" name="username" required><br><br>
-        
-        <label for="password">Password:</label>
-        <input type = 'password' id = 'password' name = 'password' required <br><br>
-        <!-- Add an input for password here.-->
-        
-       <button type = 'button' onclick = 'login()'>
-           Clique me
-       </button><!-- Adicione um botão aqui.-->
-       
-   
+  <div class="recipiente">
 
-    <p id="message"></p> 
+    <!-- Menu hambúrguer já criado -->
+    <%- include('partials/menuHamburguer') %>
 
-    <script src="script.js"></script>
+    <!-- Saudação e botão -->
+    <main class="conteudo-principal">
+      <h1 class="saudacao">Olá, Ana:</h1>
+
+      <div class="topo-reservas">
+        <h2 class="subtitulo">Suas reservas são:</h2>
+        <button class="botao-nova-reserva">
+          <i class="icone-calendario"></i> NOVA RESERVA
+        </button>
+      </div>
+
+      <!-- Container que será populado dinamicamente -->
+      <div class="container-reservas" id="listaReservas">
+        <!-- Reservas serão carregadas aqui com JS -->
+      </div>
+
+    </main>
+  </div>
+
+  <script src="/js/carregarReservas.js"></script>
 </body>
 </html>

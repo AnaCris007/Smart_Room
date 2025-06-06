@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Menu Hambúrguer</title>
+    <%- include('head', { title: 'Smart Room' }) %>
+    <link rel="stylesheet" href="css/menuHamburguer.css">
+
+</head>
+<body>
+    <div class="recipiente">
+        <!-- Cabeçalho com Menu Hambúrguer -->
+        <header class="cabecalho">
+            <div class="menu-hamburguer" id="menuHamburguer">
+                <div class="icone-menu">
+                    <!--Tracinhos do menu-->
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            </div>
+        </header>
+
+        <!-- Menu Expandido -->
+        <nav class="sobreposicao-menu" id="sobreposicaoMenu">
+            <div class="conteudo-menu">
+                <div class="cabecalho-menu">
+                    <span class="titulo-menu">Menu</span>
+                    <button class="botao-fechar" id="botaoFechar">&times;</button>
+                </div>
+                
+                <div class="estatisticas-menu">
+                    <div class="item-estatistica">
+                        <h3>Total de reservas:</h3>
+                        <span class="numero-estatistica">64</span>
+                    </div>
+                    
+                    <div class="item-estatistica">
+                        <h3>Total de cancelamentos:</h3>
+                        <span class="numero-estatistica">3</span>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </div>
+
+    <script>
+        // Elementos do DOM
+        const menuHamburguer = document.getElementById('menuHamburguer');
+        const sobreposicaoMenu = document.getElementById('sobreposicaoMenu');
+        const botaoFechar = document.getElementById('botaoFechar');
+
+        // Função para abrir o menu
+        function abrirMenu() {
+            sobreposicaoMenu.classList.add('ativo');
+            document.body.style.overflow = 'hidden'; // Impede rolagem na página
+        }
+
+        // Função para fechar o menu
+        function fecharMenu() {
+            sobreposicaoMenu.classList.remove('ativo');
+            document.body.style.overflow = 'auto'; // Restaura rolagem na página
+        }
+
+        // Ouvintes de eventos
+        menuHamburguer.addEventListener('click', abrirMenu);
+        botaoFechar.addEventListener('click', fecharMenu);
+
+        // Fechar menu ao clicar fora dele
+        sobreposicaoMenu.addEventListener('click', function(evento) {
+            if (evento.target === sobreposicaoMenu) {
+                fecharMenu();
+            }
+        });
+
+        // Fechar menu com a tecla ESC
+        document.addEventListener('keydown', function(evento) {
+            if (evento.key === 'Escape' && sobreposicaoMenu.classList.contains('ativo')) {
+                fecharMenu();
+            }
+        });
+    </script>
+</body>
+</html>

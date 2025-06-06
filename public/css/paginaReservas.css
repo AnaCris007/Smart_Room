@@ -1,263 +1,95 @@
-/* General Styles */
 body {
-    margin: 0;
-    font-family: 'Poppins', sans-serif;
-    background-color: #E0E7FF; /* Light blue background from image */
-    color: #1E293B; /* Default dark text color */
-    display: flex;
-    flex-direction: column;
-    min-height: 100vh;
+  font-family: 'Poppins', sans-serif;
+  background-color: #72AAFF;
+  margin: 0;
+  padding: 0;
+  color: #000;
 }
 
-.app-top-bar {
-    background-color: #F0F0F0; /* Light grey, similar to browser chrome */
-    padding: 8px 16px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    border-bottom: 1px solid #D1D5DB;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+.conteudo-principal {
+  padding: 40px 60px;
+  margin-left: 20px;
 }
 
-.app-top-bar .left-controls {
-    display: flex;
-    align-items: center;
+.saudacao {
+  font-size: 32px;
+  font-weight: bold;
+  color: #1a1a1a;
 }
 
-.app-top-bar .app-title {
-    font-size: 1em;
-    font-weight: 500;
-    color: #374151;
+.topo-reservas {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 30px 0 20px 0;
 }
 
-.app-top-bar .nav-button {
-    background: none;
-    border: none;
-    color: #4B5563;
-    cursor: pointer;
-    padding: 6px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+.subtitulo {
+  font-size: 22px;
+  font-weight: bold;
+  color: #1a1a1a;
 }
 
-.app-top-bar .nav-button:hover {
-    background-color: #E5E7EB;
+.botao-nova-reserva {
+  background-color: #3000e0;
+  color: white;
+  border: none;
+  padding: 14px 24px;
+  font-size: 16px;
+  font-weight: bold;
+  border-radius: 30px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  transition: background 0.3s ease;
 }
 
-.app-top-bar .nav-button .material-icons {
-    font-size: 22px;
+.botao-nova-reserva:hover {
+  background-color: #1d00a8;
 }
 
-.app-top-bar .right-controls {
-    display: flex;
-    gap: 8px;
+.icone-calendario::before {
+  content: "\1F4C5"; /* Emoji calendário como placeholder */
+  font-size: 18px;
 }
 
-
-.main-page-container {
-    flex-grow: 1;
-    padding: 20px;
-    background-color: #A8C5FF; /* Main content background - lighter blue */
-    display: flex;
-    flex-direction: column;
+.container-reservas {
+  max-height: 480px;
+  overflow-y: auto;
+  background-color: #174A94;
+  border-radius: 10px;
+  padding: 20px;
+  color: white;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
 }
 
-/* Header Section */
-.app-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 25px;
+/* Scroll personalizado */
+.container-reservas::-webkit-scrollbar {
+  width: 8px;
+}
+.container-reservas::-webkit-scrollbar-thumb {
+  background-color: #888;
+  border-radius: 10px;
+}
+.container-reservas::-webkit-scrollbar-track {
+  background-color: #ddd;
 }
 
-.greeting-hamburger {
-    display: flex;
-    align-items: center;
-    gap: 15px;
-}
-
-.hamburger-menu {
-    background: none;
-    border: none;
-    cursor: pointer;
-    padding: 0;
-    color: #000; /* Black hamburger icon */
-}
-
-.hamburger-menu .material-icons {
-    font-size: 36px; /* Larger hamburger icon */
-    background-color: #E0E7FF; /* Light square background for hamburger */
-    padding: 5px;
-    border-radius: 4px;
-}
-
-.user-greeting {
-    font-size: 2.2em; /* Large "Olá, Ana:" text */
-    font-weight: 700;
-    color: #000; /* Black text */
-    margin: 0;
-}
-
-.action-button {
-    border: none;
-    border-radius: 20px; /* Rounded corners for buttons */
-    padding: 10px 20px;
-    font-family: 'Poppins', sans-serif;
-    font-weight: 600;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    text-transform: uppercase;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-    transition: background-color 0.2s ease;
-}
-
-.action-button .material-icons {
-    font-size: 20px;
-}
-
-.nova-reserva-btn {
-    background-color: #3B3BFF; /* Strong blue for "NOVA RESERVA" */
-    color: white;
-}
-
-.nova-reserva-btn:hover {
-    background-color: #2A2ACC;
-}
-
-/* Content Area */
-.content-area {
-    flex-grow: 1;
-    display: flex;
-    flex-direction: column;
-}
-
-.section-title {
-    font-size: 1.6em; /* "Suas reservas são:" */
-    font-weight: 700;
-    color: #000; /* Black text */
-    margin-bottom: 15px;
-}
-
-.reservas-list {
-    background-color: #003366; /* Dark blue for reservations list */
-    border-radius: 8px;
-    padding: 20px;
-    color: white;
-    max-height: 400px; /* Adjust as needed */
-    overflow-y: auto;
-    flex-grow: 1; /* Allows the list to take available space */
-}
-
-/* Custom Scrollbar for Webkit browsers */
-.reservas-list::-webkit-scrollbar {
-    width: 8px;
-}
-
-.reservas-list::-webkit-scrollbar-track {
-    background: #E0E7FF; /* Light track, matching hamburger background */
-    border-radius: 10px;
-}
-
-.reservas-list::-webkit-scrollbar-thumb {
-    background: #888; /* Grey thumb */
-    border-radius: 10px;
-}
-
-.reservas-list::-webkit-scrollbar-thumb:hover {
-    background: #555; /* Darker thumb on hover */
-}
-
-.reserva-item {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 15px 0;
-    border-bottom: 1px solid #336699; /* Lighter blue for separator */
-}
-
-.reserva-item:last-child {
-    border-bottom: none;
-}
-
-.reserva-item .details p {
-    margin: 5px 0;
-    display: flex;
-    align-items: center;
-    font-size: 1em;
-}
-
-.reserva-item .details .material-icons {
-    margin-right: 10px;
-    font-size: 20px;
-}
-
-.cancelar-btn {
-    background-color: #3B3BFF; /* Same blue as "NOVA RESERVA" */
-    color: white;
-    padding: 8px 18px;
-    font-size: 0.9em;
-    border-radius: 15px;
-}
-
-.cancelar-btn:hover {
-    background-color: #2A2ACC;
-}
-
-.empty-message {
-    text-align: center;
-    padding: 20px;
-    font-style: italic;
-}
-
-/* Responsive adjustments */
+/* Responsividade */
 @media (max-width: 768px) {
-    .user-greeting {
-        font-size: 1.8em;
-    }
-    .section-title {
-        font-size: 1.4em;
-    }
-    .app-header {
-        flex-direction: column;
-        align-items: stretch; /* Stretch items to full width */
-        gap: 15px;
-    }
-    .greeting-hamburger {
-        justify-content: space-between; /* Pushes hamburger to the right if screen is very small */
-    }
-    .nova-reserva-btn {
-        width: 100%;
-        justify-content: center;
-    }
+  .conteudo-principal {
+    padding: 20px;
+  }
+
+  .topo-reservas {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 15px;
+  }
+
+  .botao-nova-reserva {
+    width: 100%;
+    justify-content: center;
+  }
 }
-
-@media (max-width: 600px) {
-    .user-greeting {
-        font-size: 1.6em;
-    }
-
-    .section-title {
-        font-size: 1.3em;
-    }
-
-    .reservas-list {
-        max-height: 300px; /* Adjust height for smaller screens */
-    }
-
-    .reserva-item {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 10px;
-    }
-
-    .cancelar-btn {
-        align-self: flex-start; /* Align button to the start in column layout */
-    }
-    .app-top-bar .app-title {
-        display: none; /* Optionally hide title on very small screens */
-    }
-} 
