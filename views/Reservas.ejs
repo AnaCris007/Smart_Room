@@ -54,5 +54,14 @@
     </div>
   </div>
   <script src="/js/paginaReservas.js"></script>
+  <script>
+  // Se não veio a matrícula do backend, tenta pegar do localStorage e recarrega com a query
+  <% if (!matricula) { %>
+    const matricula = localStorage.getItem('matricula');
+    if (matricula) {
+      window.location.href = '/reservas?matricula=' + encodeURIComponent(matricula);
+    }
+  <% } %>
+  </script>
 </body>
 </html>

@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8" />
+    <%- include('partials/head', { title: 'Smart Room' }) %>
+    <link rel="stylesheet" href="css/paginaSalasDisponiveis.css">
+</head>
+<body>
+    <div class="salas-header">
+        <button class="voltar-btn" onclick="window.history.back()">&larr;</button>
+        <span class="titulo-reservar">Reservar:</span>
+        <div class="semana-navegacao">
+            <button class="seta-semana" id="semanaAnterior">&larr;</button>
+            <span id="labelSemana" class="label-semana"></span>
+            <button class="seta-semana" id="semanaProxima">&rarr;</button>
+        </div>
+    </div>
+    <div class="dias-container" id="diasContainer">
+        <% 
+            const diasSemana = ['Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta'];
+        %>
+        <% diasSemana.forEach(function(dia, idx) { %>
+            <div class="dia-bloco">
+                <div class="dia-titulo"><%= dia %></div>
+                <div class="dia-coluna" data-dia="<%= dia %>">
+                    <!-- Conteúdo das salas será preenchido pelo JS -->
+                </div>
+            </div>
+        <% }) %>
+    </div>
+    <script>
+        // Dados vindos do backend
+        const salasPorSemana = <%- JSON.stringify(salasPorSemana) %>;
+        let semanaAtual = 0; // 0 = semana atual, +1 = próxima, -1 = anterior
+
+        function getSemanaLabel(offset) {
+            const hoje = new Date();
+            const inicioSemana = new Date(hoje);
+            inicioSemana.setDate(hoje.getDate() - ((hoje.getDay() + 6) % 7) + (offset * 7));
+            const fimSemana = new Date(inicioSemana);
+            fimSemana.setDate(inicioSemana.getDate() + 4);
+            return `${inicioSemana.toLocaleDateString('pt-BR')} - ${fimSemana.toLocaleDateString('pt-BR')}`;
+        }
+
+        function renderSalasSemana(offset) {
+            const semanaKey = String(offset);
+            const salasPorDia = salasPorSemana[semanaKey] || {};
+            document.getElementById('labelSemana').textContent = getSemanaLabel(offset);
+
+            document.querySelectorAll('.dia-coluna').forEach(function(coluna) {
+                const dia = coluna.getAttribute('data-dia');
+                coluna.innerHTML = '';
+                if (salasPorDia[dia] && salasPorDia[dia].length > 0) {
+                    salasPorDia[dia].forEach(function(sala) {
+                        // Adiciona data-data para uso no clique
+                        const div = document.createElement('div');
+                        div.className = 'sala-item';
+                        div.textContent = sala.nome;
+                        if (sala.dia_disponivel) {
+                            div.setAttribute('data-data', sala.dia_disponivel);
+                        }
+                        // Torna clicável
+                        div.style.cursor = 'pointer';
+                        div.onclick = function() {
+                            const params = new URLSearchParams({
+                                sala: sala.nome,
+                                data: sala.dia_disponivel || dia
+                            });
+                            window.location.href = `/confirmar?${params.toString()}`;
+                        };
+                        coluna.appendChild(div);
+                    });
+                } else {
+                    const div = document.createElement('div');
+                    div.className = 'sala-item sala-vazia';
+                    div.textContent = '-';
+                    coluna.appendChild(div);
+                }
+            });
+        }
+
+        document.getElementById('semanaAnterior').onclick = function() {
+            semanaAtual--;
+            renderSalasSemana(semanaAtual);
+        };
+        document.getElementById('semanaProxima').onclick = function() {
+            semanaAtual++;
+            renderSalasSemana(semanaAtual);
+        };
+
+        // Inicializa com a semana atual
+        renderSalasSemana(semanaAtual);
+    </script>
+</body>
+</html>

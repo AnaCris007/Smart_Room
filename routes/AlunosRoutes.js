@@ -1,9 +1,12 @@
 const express = require('express');
 const router = express.Router();
-const AlunosController = require('../controllers/AlunosController');
+const alunosController = require('../controllers/AlunosController');
+const reservasController = require('../controllers/ReservasController');
 
-router.post('/', AlunosController.cadastrarAluno);
-router.get('/', AlunosController.listarAlunos);
-router.get('/:id/reservas', AlunosController.listarReservasPorAluno);
+router.post('/', alunosController.cadastrarAluno);
+router.get('/', alunosController.listarAlunos);
+
+// Rota para listar reservas de um aluno específico
+router.get('/:matricula/reservas', reservasController.listarReservasPorAluno);
 
 module.exports = router;

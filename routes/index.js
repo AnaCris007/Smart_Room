@@ -12,7 +12,7 @@ const LoginRoutes = require('./LoginRoutes');
 router.use('/alunos', alunoRoutes);              // Rotas relacionadas aos alunos
 router.use('/cancelamentos', cancelamentoRoutes); // Rotas relacionadas aos cancelamentos
 router.use('/reservas', reservasRoutes);          // Rotas relacionadas às reservas
-router.use('/salas', salas_disponiveisRoutes);    // Rotas relacionadas às salas disponíveis
+router.use('/salas_disponiveis', salas_disponiveisRoutes); // Rotas relacionadas às salas disponíveis
 router.use('/login', LoginRoutes);                 // Rotas relacionadas ao login/autenticação
 
 // Exporta o roteador configurado para ser usado no app principal

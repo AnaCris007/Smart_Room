@@ -3,6 +3,7 @@ const router = express.Router();
 const CancelamentoController = require('../controllers/CancelamentosController');
 
 router.post('/', CancelamentoController.cancelarReserva);
-router.get('/', CancelamentoController.listarCancelamentos);
+// Remova ou comente a linha abaixo se não existe a função listarCancelamentos
+// router.get('/', CancelamentoController.listarCancelamentos);
 
 module.exports = router;

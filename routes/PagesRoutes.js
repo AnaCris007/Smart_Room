@@ -1,10 +1,13 @@
 const express = require('express');
 const router = express.Router();
-const PagesController = require('../controllers/PagesController');
+const pagesController = require('../controllers/PagesController');
 
 // Rotas de páginas
-router.get('/login', PagesController.paginaLogin);
-router.get('/cadastro', PagesController.paginaCadastro);
-router.get('/reservas', PagesController.paginaReservas);
+router.get('/login', pagesController.paginaLogin);
+router.get('/cadastro', pagesController.paginaCadastro);
+router.get('/reservas', pagesController.paginaReservas);
+router.get('/salas', pagesController.paginaSala);
+router.get('/confirmar', pagesController.paginaConfirmarReserva);
+router.get('/salaNova', pagesController.paginaAdicionarSala);
 
 module.exports = router;

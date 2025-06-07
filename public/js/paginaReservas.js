@@ -44,19 +44,21 @@ document.addEventListener("DOMContentLoaded", async function () {
       div.classList.add("item-reserva");
 
       // Formatação de data e horário
-      let dataFormatada = reserva.dia || reserva.data || '';
+      let dataFormatada = reserva.dia || reserva.dia_disponivel || '';
       if (dataFormatada && dataFormatada.includes('T')) {
         dataFormatada = new Date(dataFormatada).toLocaleDateString('pt-BR');
       }
-      let horarioFormatado = reserva.horario || reserva.inicio || '';
+      let horarioFormatado = reserva.horario || '';
       if (horarioFormatado && horarioFormatado.length > 5) {
         horarioFormatado = horarioFormatado.slice(0,5);
       }
 
+      // Mostra corretamente o número da sala e duração
       div.innerHTML = `
-        <p><img src="/assets/Icons/porta.png" alt="Sala" />Sala: ${reserva.id_salas_dispo || reserva.sala || ''}</p>
+        <p><img src="/assets/Icons/porta.png" alt="Sala" />Sala: ${reserva.numero_sala || reserva.sala || ''}</p>
         <p><img src="/assets/Icons/calendario.png" alt="Data" />Data: ${dataFormatada}</p>
         <p><img src="/assets/Icons/relogio.png" alt="Horário" />Horário: ${horarioFormatado}</p>
+        <p><img src="/assets/Icons/relogio.png" alt="Duração" />Duração: ${reserva.descricao_duracao || ''}</p>
         <button class="cancelar-btn">CANCELAR</button>
       `;
 
@@ -68,14 +70,14 @@ document.addEventListener("DOMContentLoaded", async function () {
   const botaoGrande = document.querySelector(".grande-reserva-btn");
   if (botaoGrande) {
     botaoGrande.addEventListener("click", () => {
-      window.location.href = "/pagina-de-nova-reserva";
+      window.location.href = "/salas";
     });
   }
 
   // Ação do botão do topo
   if (novaReservaBtn) {
     novaReservaBtn.addEventListener("click", () => {
-      window.location.href = "/pagina-de-nova-reserva";
+      window.location.href = "/salas";
     });
   }
 
@@ -148,6 +150,25 @@ document.addEventListener("DOMContentLoaded", async function () {
             alert('Erro ao cancelar reserva.');
           }
         });
+      };
+    });
+  }
+
+  // Após renderizar as reservas, adicione o evento ao clicar em uma sala
+  if (reservas && reservas.length > 0) {
+    const reservaItems = document.querySelectorAll('.item-reserva');
+    reservaItems.forEach((item, idx) => {
+      item.onclick = (e) => {
+        // Evita conflito com botão cancelar
+        if (e.target.classList.contains('cancelar-btn')) return;
+        const reserva = reservas[idx];
+        // Redireciona para /confirmar com os dados da reserva na query string
+        const params = new URLSearchParams({
+          sala: reserva.id_salas_dispo || reserva.sala || '',
+          data: reserva.dia || reserva.data || '',
+          horario: reserva.horario || reserva.inicio || ''
+        });
+        window.location.href = `/confirmar?${params.toString()}`;
       };
     });
   }

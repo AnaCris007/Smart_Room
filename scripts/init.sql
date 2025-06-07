@@ -16,7 +16,7 @@ senha_aluno VARCHAR(60) NOT NULL
 -- Criar tabela Salas_disponiveis
 CREATE TABLE IF NOT EXISTS Salas_disponiveis(
 id_salas_dispo SERIAL PRIMARY KEY,
-numero_sala INT NOT NULL,
+numero_sala VARCHAR(20) NOT NULL,
 dia_disponivel DATE NOT NULL,
 a_partir_das TIME NOT NULL,
 ate_as TIME NOT NULL,
@@ -54,7 +54,6 @@ FOREIGN KEY (id_duracao) REFERENCES Duracao(id_duracao)
 CREATE TABLE IF NOT EXISTS Cancelamentos (
 id_cancelar SERIAL PRIMARY KEY,
 id_reservas INT NOT NULL,
-dia_cancelar DATE NOT NULL,
-FOREIGN KEY (id_reservas) REFERENCES Reservas(id_reservas) ON DELETE CASCADE
+dia_cancelar DATE NOT NULL
 );
 

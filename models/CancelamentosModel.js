@@ -1,21 +1,18 @@
 const pool = require('../config/db');
 
-exports.cancelarReserva = async (id_reservas) => {
-  // Verifica se já existe um cancelamento para essa reserva
-  const existe = await pool.query(
-    'SELECT 1 FROM cancelamentos WHERE id_reservas = $1',
-    [id_reservas]
-  );
-  if (existe.rowCount === 0) {
-    // Só insere se ainda não existe
-    await pool.query(
-      'INSERT INTO cancelamentos (id_reservas, dia_cancelar) VALUES ($1, CURRENT_DATE)',
-      [id_reservas]
+exports.contarCancelamentosPorMatricula = async (matricula_alunos) => {
+    const result = await pool.query(
+        `SELECT COUNT(*) FROM cancelamentos c
+         JOIN reservas r ON c.id_reservas = r.id_reservas
+         WHERE r.matricula_alunos = $1`,
+        [matricula_alunos]
     );
-  }
-  // Remove a reserva da tabela reservas
-  await pool.query(
-    'DELETE FROM reservas WHERE id_reservas = $1',
-    [id_reservas]
-  );
+    return parseInt(result.rows[0].count, 10);
+};
+
+exports.cancelarReserva = async (id_reservas) => {
+    await pool.query(
+        `INSERT INTO cancelamentos (id_reservas, dia_cancelar) VALUES ($1, CURRENT_DATE)`,
+        [id_reservas]
+    );
 };

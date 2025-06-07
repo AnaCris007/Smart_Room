@@ -6,6 +6,7 @@
     <title>Menu Hambúrguer</title>
     <%- include('head', { title: 'Smart Room' }) %>
     <link rel="stylesheet" href="css/menuHamburguer.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;400;700&display=swap" rel="stylesheet">
 
 </head>
 <body>
@@ -33,13 +34,15 @@
                 <div class="estatisticas-menu">
                     <div class="item-estatistica">
                         <h3>Total de reservas:</h3>
-                        <span class="numero-estatistica">64</span>
+                        <span class="numero-estatistica"><%= typeof totalReservas !== 'undefined' ? totalReservas : 0 %></span>
                     </div>
-                    
                     <div class="item-estatistica">
                         <h3>Total de cancelamentos:</h3>
-                        <span class="numero-estatistica">3</span>
+                        <span class="numero-estatistica"><%= typeof totalCancelamentos !== 'undefined' ? totalCancelamentos : 0 %></span>
                     </div>
+                </div>
+                <div class="menu-acoes">
+                    <button id="btnNovaSala" class="btn-nova-sala">ADICIONAR NOVA SALA</button>
                 </div>
             </div>
         </nav>
@@ -80,6 +83,11 @@
                 fecharMenu();
             }
         });
+
+        // Botão para adicionar nova sala
+        document.getElementById('btnNovaSala').onclick = function() {
+            window.location.href = '/salaNova';
+        };
     </script>
 </body>
 </html>

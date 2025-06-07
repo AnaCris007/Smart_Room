@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Adicionar Nova Sala</title>
+    <%- include('partials/head', { title: 'Smart Room' }) %>
+    <link rel="stylesheet" href="/css/paginaCadastro.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            min-height: 100vh;
+            margin: 0;
+            padding: 0;
+            font-family: 'Poppins', Arial, sans-serif;
+            /* Corrige o caminho do background ou remova se não existir */
+            /* background: url('/assets/Backgrounds/bg-salas.jpg') no-repeat center center fixed; */
+            background: #7db7fa;
+            background-size: cover;
+        }
+        .adicionar-sala-container {
+            max-width: 480px;
+            margin: 48px auto;
+            background: rgba(19,74,148,0.92);
+            border-radius: 18px;
+            padding: 36px 32px 32px 32px;
+            box-shadow: 0 4px 24px rgba(0,0,0,0.13);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .adicionar-sala-container h1 {
+            color: #fff;
+            font-size: 2.2rem;
+            font-weight: bold;
+            margin-bottom: 32px;
+            font-family: 'Poppins', Arial, sans-serif;
+        }
+        .adicionar-sala-form {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            gap: 22px;
+        }
+        .adicionar-sala-form input, .adicionar-sala-form select {
+            border-radius: 14px;
+            border: none;
+            padding: 14px 18px;
+            font-size: 1.1rem;
+            font-family: 'Poppins', Arial, sans-serif;
+            background: #dbe5f1;
+            font-weight: 600;
+            outline: none;
+        }
+        .adicionar-sala-form label {
+            color: #fff;
+            font-weight: 600;
+            margin-bottom: 4px;
+            font-family: 'Poppins', Arial, sans-serif;
+        }
+        .btn-adicionar-sala {
+            background: #2800ED;
+            color: #fff;
+            font-size: 1.2rem;
+            font-weight: bold;
+            border: none;
+            border-radius: 14px;
+            padding: 14px 0;
+            margin-top: 18px;
+            width: 100%;
+            cursor: pointer;
+            transition: background 0.18s, transform 0.18s;
+            box-shadow: 0 2px 12px rgba(26,0,179,0.18);
+            letter-spacing: 1px;
+            font-family: 'Poppins', Arial, sans-serif;
+        }
+        .btn-adicionar-sala:hover {
+            background: #1a00b3;
+            transform: scale(1.04);
+        }
+        .msg-sala {
+            margin-top: 18px;
+            font-weight: bold;
+            text-align: center;
+            border-radius: 8px;
+            padding: 10px 0;
+            display: none;
+            font-family: 'Poppins', Arial, sans-serif;
+        }
+        .msg-sala.sucesso {
+            background: #2ecc40;
+            color: #fff;
+        }
+        .msg-sala.erro {
+            background: #ffdddd;
+            color: #b20000;
+        }
+    </style>
+</head>
+<body>
+    <div class="adicionar-sala-container">
+        <h1>Adicionar Nova Sala</h1>
+        <form class="adicionar-sala-form" id="formAdicionarSala" autocomplete="off">
+            <label for="numero_sala">
+                Nome/Identificação da sala
+                <span style="color:#ff0;font-size:0.95em;font-weight:400;">(Ex: 18 ou A-02)</span>
+            </label>
+            <input type="text" id="numero_sala" name="numero_sala" required placeholder="Ex: 18 ou A-02" pattern="^[A-Za-z0-9\-]+$" maxlength="20">
+
+            <label for="dia_disponivel">Dia disponível</label>
+            <input type="date" id="dia_disponivel" name="dia_disponivel" required>
+
+            <label for="a_partir_das">Disponível a partir das</label>
+            <input type="time" id="a_partir_das" name="a_partir_das" required>
+
+            <label for="ate_as">Disponível até</label>
+            <input type="time" id="ate_as" name="ate_as" required>
+
+            <button type="submit" class="btn-adicionar-sala">ADICIONAR SALA</button>
+        </form>
+        <div id="msgSala" class="msg-sala"></div>
+    </div>
+    <script>
+        document.getElementById('formAdicionarSala').onsubmit = async function(e) {
+            e.preventDefault();
+            const msg = document.getElementById('msgSala');
+            msg.style.display = 'none';
+            msg.className = 'msg-sala';
+
+            const numero_sala = document.getElementById('numero_sala').value.trim();
+            const dia_disponivel = document.getElementById('dia_disponivel').value.trim();
+            const a_partir_das = document.getElementById('a_partir_das').value.trim();
+            const ate_as = document.getElementById('ate_as').value.trim();
+
+            // Validação: todos os campos obrigatórios
+            if (!numero_sala || !dia_disponivel || !a_partir_das || !ate_as) {
+                msg.textContent = 'Preencha todos os campos.';
+                msg.classList.add('erro');
+                msg.style.display = 'block';
+                return;
+            }
+            // Permite letras, números e hífen no nome da sala
+            if (!/^[A-Za-z0-9\-]+$/.test(numero_sala)) {
+                msg.textContent = 'O nome da sala deve conter apenas letras, números ou hífen.';
+                msg.classList.add('erro');
+                msg.style.display = 'block';
+                return;
+            }
+            if (a_partir_das >= ate_as) {
+                msg.textContent = 'O horário final deve ser maior que o inicial.';
+                msg.classList.add('erro');
+                msg.style.display = 'block';
+                return;
+            }
+
+            try {
+                // Use o endpoint correto da sua API (provavelmente /api/salas_disponiveis)
+                const resp = await fetch('/api/salas_disponiveis', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ numero_sala, dia_disponivel, a_partir_das, ate_as })
+                });
+                if (resp.ok) {
+                    msg.textContent = 'Sala adicionada com sucesso!';
+                    msg.classList.add('sucesso');
+                    msg.style.display = 'block';
+                    setTimeout(() => { window.location.href = '/salas'; }, 1200);
+                } else {
+                    const erro = await resp.json();
+                    msg.textContent = erro.mensagem || 'Erro ao adicionar sala.';
+                    msg.classList.add('erro');
+                    msg.style.display = 'block';
+                }
+            } catch {
+                msg.textContent = 'Erro ao conectar ao servidor.';
+                msg.classList.add('erro');
+                msg.style.display = 'block';
+            }
+        };
+    </script>
+</body>
+</html>

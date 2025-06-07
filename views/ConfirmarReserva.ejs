@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <%- include('partials/head', { title: 'Smart Room' }) %>
+    <link rel="stylesheet" href="css/paginaConfirmarReserva.css">
+</head>
+<body>
+    <div class="confirmar-bg">
+        <div class="confirmar-header">
+            <button class="voltar-btn" onclick="window.history.back()">&larr;</button>
+            <span class="titulo-confirmar">Reservar:</span>
+        </div>
+        <div class="confirmar-box">
+            <div class="linha-info">
+                <img src="/assets/Icons/porta.png" alt="Sala" class="icone-info"/>
+                <span class="info-label">Sala:</span>
+                <span class="info-valor" id="salaSelecionada"><%= sala || 'T-18' %></span>
+            </div>
+            <div class="linha-info">
+                <img src="/assets/Icons/calendario.png" alt="Data" class="icone-info"/>
+                <span class="info-label">Data:</span>
+                <span class="info-valor" id="dataSelecionada"><%= data ? (new Date(data).toLocaleDateString('pt-BR')) : '19/05' %></span>
+            </div>
+            <div class="linha-info">
+                <img src="/assets/Icons/relogio.png" alt="Horário" class="icone-info"/>
+                <span class="info-label">A partir das:</span>
+                <input 
+                    type="time" 
+                    class="input-confirmar" 
+                    id="horaSelecionada" 
+                    name="horaSelecionada" 
+                    required
+                    min="<%= horarios.a_partir_das %>"
+                    max="<%= horarios.ate_as %>"
+                    value="<%= horario ? horario.slice(0,5) : horarios.a_partir_das %>"
+                >
+                <span class="info-label" style="font-size:1rem;color:#eee;">(Disponível: <%= horarios.a_partir_das %> - <%= horarios.ate_as %>)</span>
+            </div>
+            <div class="linha-info duracao-label-align">
+                <div class="duracao-coluna">
+                    <span class="info-label">Duração da reserva:</span>
+                    <select class="input-confirmar" id="duracaoSelecionada" name="duracaoSelecionada" required>
+                        <option value="">Selecione</option>
+                        <option value="30">30 minutos</option>
+                        <option value="60">1 hora</option>
+                        <option value="90">1 hora e 30 minutos</option>
+                        <option value="120">2 horas</option>
+                    </select>
+                </div>
+            </div>
+            <button class="btn-confirmar" id="btnConfirmar">CONFIRMAR</button>
+        </div>
+        <!-- Pop-up de reserva concluída -->
+        <div id="popup-concluida" class="popup-concluida" style="display:none;">
+            <div class="popup-concluida-box">
+                <button class="popup-concluida-fechar" id="fecharConcluida">
+                    <span class="popup-x">×</span>
+                </button>
+                <div class="popup-concluida-titulo">RESERVA CONCLUÍDA!</div>
+            </div>
+        </div>
+    </div>
+    <script>
+        // Limita as opções de duração conforme o horário selecionado
+        function atualizarDuracoes() {
+            const min = document.getElementById('horaSelecionada').min;
+            const max = document.getElementById('horaSelecionada').max;
+            const inicio = document.getElementById('horaSelecionada').value || min;
+            const duracaoSelect = document.getElementById('duracaoSelecionada');
+            const opcoes = [
+                { value: 30, label: '30 minutos' },
+                { value: 60, label: '1 hora' },
+                { value: 90, label: '1 hora e 30 minutos' },
+                { value: 120, label: '2 horas' }
+            ];
+            // Limpa opções
+            duracaoSelect.innerHTML = '<option value="">Selecione</option>';
+            opcoes.forEach(opt => {
+                // Calcula horário final
+                const [h, m] = inicio.split(':').map(Number);
+                const fim = new Date(0,0,0,h,m+opt.value);
+                const fimStr = fim.toTimeString().slice(0,5);
+                if (fimStr <= max) {
+                    const option = document.createElement('option');
+                    option.value = opt.value;
+                    option.textContent = opt.label;
+                    duracaoSelect.appendChild(option);
+                }
+            });
+        }
+        document.getElementById('horaSelecionada').addEventListener('input', atualizarDuracoes);
+        window.addEventListener('DOMContentLoaded', atualizarDuracoes);
+
+        // Impede confirmação sem preencher todos os dados corretamente
+        document.getElementById('btnConfirmar').onclick = async function(e) {
+            e.preventDefault();
+            const hora = document.getElementById('horaSelecionada').value;
+            const duracao = document.getElementById('duracaoSelecionada').value;
+            let erro = '';
+            if (!hora) erro = 'Selecione o horário de início.';
+            else if (!duracao) erro = 'Selecione a duração da reserva.';
+            if (erro) {
+                alert(erro);
+                return;
+            }
+
+            const sala = document.getElementById('salaSelecionada').textContent.trim();
+            const data = document.getElementById('dataSelecionada').textContent.trim();
+            const inicio = hora;
+            const duracaoMin = parseInt(duracao, 10);
+            const matricula = localStorage.getItem('matricula');
+            if (!matricula) {
+                alert('Usuário não autenticado.');
+                return;
+            }
+            // Calcula novo horário de início para disponibilidade
+            const [h, m] = inicio.split(':').map(Number);
+            const fimDate = new Date(0,0,0,h,m+duracaoMin);
+            const fim = fimDate.toTimeString().slice(0,5);
+
+            try {
+                // 1. Adiciona reserva na tabela reservas
+                const respReserva = await fetch('/api/reservas', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        numero_sala: sala,
+                        dia: data,
+                        horario: inicio,
+                        duracao: duracaoMin,
+                        matricula_alunos: matricula
+                    })
+                });
+                if (!respReserva.ok) {
+                    const erro = await respReserva.json();
+                    alert(erro.erro || 'Erro ao criar reserva.');
+                    return;
+                }
+
+                // 2. Atualiza disponibilidade da sala na tabela salas_disponiveis
+                await fetch(`/api/salas_disponiveis/atualizar-horario`, {
+                    method: 'PATCH',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        numero_sala: sala,
+                        dia_disponivel: data,
+                        novo_inicio: fim // sala agora disponível a partir do fim da reserva
+                    })
+                });
+
+                // 3. Mostra pop-up de sucesso
+                document.getElementById('popup-concluida').style.display = 'flex';
+            } catch (err) {
+                alert('Erro ao confirmar reserva.');
+            }
+        };
+        // Fecha o pop-up e redireciona para /reservas
+        document.getElementById('fecharConcluida').onclick = function() {
+            window.location.href = '/reservas';
+        };
+    </script>
+</body>
+</html>

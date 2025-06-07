@@ -120,8 +120,8 @@ body {
 }
 
 .titulo-menu {
-    font-size: 18px;
-    font-weight: 300;
+    font-size: 30px;
+    font-weight: bold;
     color: rgba(255, 255, 255, 0.7);
 }
 
@@ -172,6 +172,31 @@ body {
     font-weight: bold;
     color: #fff;
     display: block;
+}
+
+/* Botão Nova Sala */
+.btn-nova-sala {
+    background: #2800ED;
+    color: #fff;
+    font-size: 1.2rem;
+    font-weight: bold;
+    border: none;
+    border-radius: 14px;
+    padding: 14px 32px;
+    margin: 24px auto 0 auto;
+    width: 80%;
+    min-width: 120px;
+    max-width: 260px;
+    cursor: pointer;
+    transition: background 0.18s, transform 0.18s;
+    box-shadow: 0 2px 12px rgba(26,0,179,0.18);
+    letter-spacing: 1px;
+    display: block;
+}
+
+.btn-nova-sala:hover {
+    background: #1a00b3;
+    transform: scale(1.04);
 }
 
 /* Responsividade */
