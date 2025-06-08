@@ -64,6 +64,13 @@ a {
     color: azure;
     font-size: 24px;
     font-weight: 400;
+    text-decoration: underline;
+    transition: color 0.18s, text-shadow 0.18s;
+    cursor: pointer;
+}
+
+a:hover {
+    text-shadow: 0 2px 8px #bcd;
 }
 
 button {
@@ -76,4 +83,14 @@ button {
     font-size: 32px;
     color: white;
     width: 15vw;
+    cursor: pointer;
+    transition: background 0.18s, transform 0.18s, box-shadow 0.18s;
+    box-shadow: 0 2px 12px rgba(26,0,179,0.18);
+    letter-spacing: 1px;
+}
+
+button:hover {
+    background: #1a00b3;
+    transform: scale(1.06);
+    box-shadow: 0 4px 18px rgba(26,0,179,0.28);
 }

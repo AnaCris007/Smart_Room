@@ -49,11 +49,15 @@ const PagesController = {
         const { sala, data, horario } = req.query;
         let horarios = { a_partir_das: '08:00', ate_as: '22:00' }; // padrão
         if (sala && data) {
-            const dataFormatada = /^\d{4}-\d{2}-\d{2}$/.test(data) ? data : null;
-            if (dataFormatada) {
-                const info = await SalasDisponiveisModel.buscarHorarioDisponibilidade(sala, dataFormatada);
-                if (info) horarios = info;
+            // Garante que a data está no formato YYYY-MM-DD para buscar corretamente
+            let dataFormatada = data;
+            if (/^\d{2}\/\d{2}\/\d{4}$/.test(data)) {
+                const [d, m, y] = data.split('/');
+                dataFormatada = `${y}-${m}-${d}`;
             }
+            // Busca horários reais da sala no banco
+            const info = await SalasDisponiveisModel.buscarHorarioDisponibilidade(sala, dataFormatada);
+            if (info) horarios = info;
         }
         res.render('ConfirmarReserva', { sala, data, horario, horarios });
     },
