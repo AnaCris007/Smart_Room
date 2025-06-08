@@ -2,7 +2,6 @@ const pool = require('../config/db');
 const SalasDisponiveisModel = require('../models/Salas_disponiveisModel');
 const ReservasModel = require('../models/ReservasModel');
 const CancelamentosModel = require('../models/CancelamentosModel');
-const AlunoModel = require('../models/AlunoModel');
 
 const PagesController = {
     paginaLogin: (req, res) => {
@@ -18,23 +17,24 @@ const PagesController = {
         let reservas = [];
         let totalCancelamentos = 0;
         let totalReservas = 0;
-        let nomeUsuario = '';
+        let nomeUsuario = ''; // <-- sempre define a variável
         if (matricula) {
             reservas = await ReservasModel.listarReservasPorMatricula(matricula);
             totalReservas = reservas.length;
             totalCancelamentos = await CancelamentosModel.contarCancelamentosPorMatricula(matricula);
             // Busca o nome do usuário no banco
             try {
-                const aluno = await AlunoModel.buscarAlunoPorMatricula
-                    ? await AlunoModel.buscarAlunoPorMatricula(matricula)
-                    : null;
-                if (aluno && aluno.nome) nomeUsuario = aluno.nome;
+                // Só busca se existir o model e o método
+                if (require('../models/AlunoModel').buscarAlunoPorMatricula) {
+                    const aluno = await require('../models/AlunoModel').buscarAlunoPorMatricula(matricula);
+                    if (aluno && aluno.nome) nomeUsuario = aluno.nome;
+                }
             } catch (e) {
                 nomeUsuario = '';
             }
         }
-        // Garante que nomeUsuario sempre exista na renderização
-        res.render('Reservas', { reservas, matricula, totalReservas, totalCancelamentos, nomeUsuario: nomeUsuario || '' });
+        // Sempre envia nomeUsuario para a view
+        res.render('Reservas', { reservas, matricula, totalReservas, totalCancelamentos, nomeUsuario });
     },
 
     paginaSala: async (req, res) => {
@@ -60,15 +60,11 @@ const PagesController = {
         const { sala, data, horario } = req.query;
         let horarios = { a_partir_das: '08:00', ate_as: '22:00' }; // padrão
         if (sala && data) {
-            // Garante que a data está no formato YYYY-MM-DD para buscar corretamente
-            let dataFormatada = data;
-            if (/^\d{2}\/\d{2}\/\d{4}$/.test(data)) {
-                const [d, m, y] = data.split('/');
-                dataFormatada = `${y}-${m}-${d}`;
+            const dataFormatada = /^\d{4}-\d{2}-\d{2}$/.test(data) ? data : null;
+            if (dataFormatada) {
+                const info = await SalasDisponiveisModel.buscarHorarioDisponibilidade(sala, dataFormatada);
+                if (info) horarios = info;
             }
-            // Busca horários reais da sala no banco
-            const info = await SalasDisponiveisModel.buscarHorarioDisponibilidade(sala, dataFormatada);
-            if (info) horarios = info;
         }
         res.render('ConfirmarReserva', { sala, data, horario, horarios });
     },
