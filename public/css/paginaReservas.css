@@ -110,7 +110,7 @@ header h1 {
 .nova-reserva {
     position: absolute;
     right: 40px;
-    top: 48px; /* desce o botão */
+    top: 48px; 
     z-index: 10;
     background: #2800ED;;
     color: white;
@@ -147,12 +147,12 @@ header h1 {
 /* Caixa de reservas */
 .caixa-reservas {
     width: 100%;
-    max-width: 600px; /* aumente para ficar mais largo */
+    max-width: 600px;
     background: rgba(30, 64, 175, 0.85);
     border-radius: 18px;
-    padding: 0 0 24px 0; /* padding inferior para espaçamento */
+    padding: 0 0 24px 0;
     color: white;
-    max-height: 600px; /* aumente a altura máxima */
+    max-height: 600px; 
     overflow-y: auto;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
     margin-bottom: 32px;
@@ -302,7 +302,7 @@ header h1 {
 
 .sem-reservas {
   text-align: center;
-  margin-top: 40px; /* Reduzido para subir o botão também nesta regra */
+  margin-top: 40px;
 }
 
 /* Pop-up de confirmação de cancelamento */

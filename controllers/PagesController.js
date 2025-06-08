@@ -2,6 +2,7 @@ const pool = require('../config/db');
 const SalasDisponiveisModel = require('../models/Salas_disponiveisModel');
 const ReservasModel = require('../models/ReservasModel');
 const CancelamentosModel = require('../models/CancelamentosModel');
+const AlunoModel = require('../models/AlunoModel');
 
 const PagesController = {
     paginaLogin: (req, res) => {
@@ -17,13 +18,23 @@ const PagesController = {
         let reservas = [];
         let totalCancelamentos = 0;
         let totalReservas = 0;
+        let nomeUsuario = '';
         if (matricula) {
             reservas = await ReservasModel.listarReservasPorMatricula(matricula);
             totalReservas = reservas.length;
-            // Conta todos os cancelamentos do aluno, mesmo das reservas já canceladas
             totalCancelamentos = await CancelamentosModel.contarCancelamentosPorMatricula(matricula);
+            // Busca o nome do usuário no banco
+            try {
+                const aluno = await AlunoModel.buscarAlunoPorMatricula
+                    ? await AlunoModel.buscarAlunoPorMatricula(matricula)
+                    : null;
+                if (aluno && aluno.nome) nomeUsuario = aluno.nome;
+            } catch (e) {
+                nomeUsuario = '';
+            }
         }
-        res.render('Reservas', { reservas, matricula, totalReservas, totalCancelamentos });
+        // Garante que nomeUsuario sempre exista na renderização
+        res.render('Reservas', { reservas, matricula, totalReservas, totalCancelamentos, nomeUsuario: nomeUsuario || '' });
     },
 
     paginaSala: async (req, res) => {

@@ -139,34 +139,34 @@ Contém os atributos id_cancelar, id_reservas e dia_cancelar. Ela registra o can
 O modelo físico foi implementado no arquivo init.sql, como segue abaixo:
 
 ```sql
+
 -- Criar extensão para suportar UUIDs, se ainda não estiver ativada
 CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 
 -- Criar tabela Alunos
-CREATE TABLE Alunos (
+CREATE TABLE IF NOT EXISTS Alunos (
 matricula INT PRIMARY KEY NOT NULL,
 nome VARCHAR(100) NOT NULL,
 turma VARCHAR(10) NOT NULL,
 ano INT NOT NULL,
-senha_aluno VARCHAR(60) NOT NULL,
-numero_reports INT DEFAULT 0
+email VARCHAR(255) NOT NULL,
+senha_aluno VARCHAR(60) NOT NULL
 );
 
 -- Criar tabela Salas_disponiveis
-CREATE TABLE Salas_disponiveis(
+CREATE TABLE IF NOT EXISTS Salas_disponiveis(
 id_salas_dispo SERIAL PRIMARY KEY,
-numero_sala INT NOT NULL,
+numero_sala VARCHAR(20) NOT NULL,
 dia_disponivel DATE NOT NULL,
 a_partir_das TIME NOT NULL,
 ate_as TIME NOT NULL,
 CHECK (ate_as > a_partir_das)
 );
 
-
 -- Criar tabela Duracao
-CREATE TABLE Duracao(
+CREATE TABLE IF NOT EXISTS Duracao(
 id_duracao SERIAL PRIMARY KEY,
-descricao_duracao VARCHAR(100) NOT NULL
+descricao_duracao VARCHAR(100) NOT NULL UNIQUE
 );
 
 -- Adicionar os tipos de duração de reserva existentes na escola ou universidade
@@ -174,10 +174,11 @@ INSERT INTO Duracao (descricao_duracao) Values
 ('30 minutos'),
 ('1 hora'),
 ('1 hora e 30 minutos'),
-('2 horas');
+('2 horas')
+ON CONFLICT (descricao_duracao) DO NOTHING;
 
 -- Criar tabela Reservas
-CREATE TABLE Reservas (
+CREATE TABLE IF NOT EXISTS Reservas (
 id_reservas SERIAL PRIMARY KEY,
 matricula_alunos INT NOT NULL,
 id_salas_dispo INT NOT NULL,
@@ -189,13 +190,11 @@ FOREIGN KEY (id_salas_dispo) REFERENCES Salas_Disponiveis(id_salas_dispo),
 FOREIGN KEY (id_duracao) REFERENCES Duracao(id_duracao)
 );
 
--- Criar tabela Reports
-CREATE TABLE Reports (
-id_report SERIAL PRIMARY KEY,
+-- Criar tabela Cancelamentos
+CREATE TABLE IF NOT EXISTS Cancelamentos (
+id_cancelar SERIAL PRIMARY KEY,
 id_reservas INT NOT NULL,
-descricao VARCHAR(300) NOT NULL,
-data_report DATE NOT NULL,
-FOREIGN KEY (id_reservas) REFERENCES Reservas(id_reservas)
+dia_cancelar DATE NOT NULL
 );
 
 ```
@@ -505,11 +504,128 @@ A API desenvolvida para o sistema **Smart Room** segue a arquitetura RESTful e �
 
 ---
 
-### 3.7 Interface e Navegação (Semana 07)
+### 3.7. Interface e Navegação (Semana 07)
 
-*Descreva e ilustre aqui o desenvolvimento do frontend do sistema web, explicando brevemente o que foi entregue em termos de código e sistema. Utilize prints de tela para ilustrar.*
+A interface do Smart Room foi desenvolvida para ser intuitiva, responsiva e agradável visualmente, seguindo o guia de estilos definido para o projeto. O fluxo de navegação foi pensado para que o estudante consiga realizar todas as ações principais (login, cadastro, reserva, cancelamento, visualização de salas) de forma simples e rápida, tanto em desktop quanto em dispositivos móveis.
 
----
+#### Tela de Login
+
+- Permite ao aluno acessar o sistema informando matrícula e senha;
+- Possui link para a tela de cadastro;
+- Efeito de hover nos botões e links para melhor experiência visual.
+
+<div align="center">
+  <sub>FIGURA 16 - Tela de Login</sub><br>
+  <img src= "./assets/login.png" width="100%"
+  alt="tela de Login"><br>
+  <sup>Fonte: Material produzido pela autora, 2025</sup>
+</div>
+
+#### Tela de Cadastro
+
+- Formulário para criação de conta de aluno, com validação de campos;
+- Layout centralizado, campos bem espaçados e feedback visual para erros e sucesso;
+- Efeito de hover nos botões e links.
+
+<div align="center">
+  <sub>FIGURA 17 - Tela de Cadastro</sub><br>
+  <img src= "./assets/cadastro.png" width="100%"
+  alt="tela de cadastro"><br>
+  <sup>Fonte: Material produzido pela autora, 2025</sup>
+</div>
+
+#### Tela de Reservas
+
+- Exibe todas as reservas ativas do aluno;
+- Botão para criar nova reserva e botão para cancelar reservas existentes;
+- Mostra estatísticas no menu lateral (total de reservas e cancelamentos);
+- Layout responsivo e visual limpo.
+
+<div align="center">
+  <sub>FIGURA 18 - Tela de Reservas</sub><br>
+  <img src= "./assets/reservas.png" width="100%"
+  alt="tela de reservas"><br>
+  <sup>Fonte: Material produzido pela autora, 2025</sup>
+</div>
+
+<div align="center">
+  <sub>FIGURA 19 - Tela do Menu Lateral</sub><br>
+  <img src= "./assets/menu.png" width="100%"
+  alt="tela do menu lateral"><br>
+  <sup>Fonte: Material produzido pela autora, 2025</sup>
+</div>
+
+#### Tela de Salas Disponíveis
+
+- Mostra um calendário semanal com as salas disponíveis por dia;
+- Cada sala é clicável e leva à tela de confirmação de reserva;
+- Navegação por semanas é possível;
+- Layout em colunas, cores e tipografia consistentes.
+
+<div align="center">
+  <sub>FIGURA 20 - Tela de Salas Disponíveis</sub><br>
+  <img src= "./assets/salasDispo.png" width="100%"
+  alt="tela de salas disponíveis"><br>
+  <sup>Fonte: Material produzido pela autora, 2025</sup>
+</div>
+
+#### Tela de Confirmação de Reserva
+
+- Exibe os detalhes da reserva (sala, data, horário, duração);
+- Permite ao usuário escolher o horário e a duração da reserva;
+- Botão de confirmação com feedback visual de sucesso.
+
+<div align="center">
+  <sub>FIGURA 21 - Tela de Confirmação de Reserva</sub><br>
+  <img src= "./assets/confirmacao.png" width="100%"
+  alt="tela de confirmação de researva"><br>
+  <sup>Fonte: Material produzido pela autora, 2025</sup>
+</div>
+
+#### Tela de Adicionar Nova Sala
+Embora não estivesse prevista no wireframe inicial da aplicação, a tela de Adicionar Nova Sala foi incorporada na versão final do projeto devido à necessidade de proporcionar ao usuário uma maneira simples e intuitiva de cadastrar novas salas no sistema.
+
+Essa funcionalidade foi pensada para melhorar a usabilidade e garantir a flexibilidade da aplicação. A tela conta com os seguintes elementos:
+
+- Interface para inserção de uma nova sala disponível no sistema;
+- Formulário com validação de dados e feedback visual;
+- Botão de retorno à tela anterior;
+- Layout alinhado ao padrão visual adotado nas demais telas da aplicação.
+
+<div align="center">
+  <sub>FIGURA 22 - Tela de Adicionar Nova Sala</sub><br>
+  <img src= "./assets/adicionar.png" width="100%"
+  alt="tela de adicionar nova sala"><br>
+  <sup>Fonte: Material produzido pela autora, 2025</sup>
+</div>
+
+#### Pop-ups e Mensagens
+
+- Pop-ups para confirmação de reserva, cancelamento e mensagens de sucesso/erro;
+- Seguem o padrão visual do sistema, com cores, fontes e botões consistentes.
+
+<div align="center">
+  <sub>FIGURA 23 - Pop up de Reserva Concluída</sub><br>
+  <img src= "./assets/concluido.png" width="100%"
+  alt="pop up de reserva concluida"><br>
+  <sup>Fonte: Material produzido pela autora, 2025</sup>
+</div>
+
+<div align="center">
+  <sub>FIGURA 24 - Pop up de Confirmação de Cancelamento de Reserva</sub><br>
+  <img src= "./assets/cancelamento.png" width="100%"
+  alt="pop up de confirmação de cancelamento de reserva"><br>
+  <sup>Fonte: Material produzido pela autora, 2025</sup>
+</div>
+
+<div align="center">
+  <sub>FIGURA 25 - Pop up de Confirmação de Sucesso no Cancelamento da Reserva</sub><br>
+  <img src= "./assets/sucesso.png" width="100%"
+  alt="pop up de confirmação de sucesso no cancelamento da reserva"><br>
+  <sup>Fonte: Material produzido pela autora, 2025</sup>
+</div>
+
+Todas as telas foram desenvolvidas utilizando EJS, CSS e JavaScript para interatividade. Além disso, o backend em Node.js/Express integra as views com o banco de dados PostgreSQL, garantindo que as informações exibidas estejam sempre atualizadas.
 
 ## <a name="c4"></a>4. Desenvolvimento da Aplicação Web (Semana 8)
 

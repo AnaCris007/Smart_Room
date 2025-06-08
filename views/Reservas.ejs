@@ -9,7 +9,7 @@
 <body>
   <div class="container">
       <header>
-          <h1>Olá, Ana:</h1>
+          <h1>Olá, <%= nomeUsuario ? nomeUsuario : '' %>:</h1>
           <button id="botaoNovaReserva" class="nova-reserva" style="display: none;">
               <img src="/assets/Icons/+calendario.png" alt="Icone Nova Reserva">
               NOVA RESERVA

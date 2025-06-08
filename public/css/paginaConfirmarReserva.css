@@ -52,7 +52,7 @@ body, html {
 
 .confirmar-box {
     background: #184b8c;
-    border-radius: 18px; /* adiciona um pouco de border radius */
+    border-radius: 18px; 
     margin: 36px auto 40px auto;
     padding: 56px 56px 44px 56px;
     display: flex;
@@ -80,7 +80,6 @@ body, html {
     flex-shrink: 0;
 }
 
-/* Nova regra: coloca o label e select de duração em coluna, alinhados ao relógio */
 .linha-info.duracao-label-align {
     display: flex;
     flex-direction: row;
@@ -88,7 +87,7 @@ body, html {
     gap: 18px;
     width: 100%;
     margin-top: -12px;
-    margin-left: -46px; /* puxa mais para a esquerda */
+    margin-left: -46px; 
 }
 
 .duracao-coluna {
@@ -96,7 +95,7 @@ body, html {
     flex-direction: row;
     align-items: center;
     width: 100%;
-    margin-left: 0; /* garante que não haja deslocamento */
+    margin-left: 0; 
 }
 
 .duracao-coluna .info-label {
@@ -136,9 +135,8 @@ body, html {
     box-sizing: border-box;
 }
 
-/* Alinha o label "Duração da reserva" com os ícones */
 .linha-info.duracao-label-align {
-    padding-left: 64px; /* igual à largura do ícone para alinhar */
+    padding-left: 64px; 
 }
 
 .linha-info:last-of-type {
@@ -234,7 +232,7 @@ body, html {
     margin: 0 auto;
     align-self: center;
     font-family: 'Poppins', Arial, sans-serif;
-    margin-top: 90px; /* aumenta o espaçamento do topo */
+    margin-top: 90px;
     letter-spacing: 1px;
     text-align: center;
     width: 100%;

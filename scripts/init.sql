@@ -1,5 +1,3 @@
--- init.sql
-
 -- Criar extensão para suportar UUIDs, se ainda não estiver ativada
 CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 
