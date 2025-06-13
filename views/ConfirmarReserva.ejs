@@ -21,7 +21,9 @@
             <div class="linha-info">
                 <img src="/assets/Icons/calendario.png" alt="Data" class="icone-info"/>
                 <span class="info-label">Data:</span>
-                <span class="info-valor" id="dataSelecionada"><%= data ? (new Date(data).toLocaleDateString('pt-BR')) : '19/05' %></span>
+                <span class="info-valor" id="dataSelecionada" data-raw="<%= data %>">
+                    <%= data ? (new Date(data).toLocaleDateString('pt-BR')) : '19/05' %>
+                </span>
             </div>
             <div class="linha-info">
                 <img src="/assets/Icons/relogio.png" alt="Horário" class="icone-info"/>
@@ -107,7 +109,8 @@
             }
 
             const sala = document.getElementById('salaSelecionada').textContent.trim();
-            const data = document.getElementById('dataSelecionada').textContent.trim();
+            // Use o valor do atributo data-raw para enviar ao backend
+            const data = document.getElementById('dataSelecionada').getAttribute('data-raw');
             const inicio = hora;
             const duracaoMin = parseInt(duracao, 10);
             const matricula = localStorage.getItem('matricula');

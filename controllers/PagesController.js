@@ -44,28 +44,50 @@ const PagesController = {
 
     paginaConfirmar: async (req, res) => {
         const sala = req.query.sala || 'T-18';
-        const data = req.query.data || '19/05';
+        const data = req.query.data || null;
         let horarios = { a_partir_das: '08:00', ate_as: '22:00' }; // padrão
-        if (sala && data) {
-            const dataFormatada = /^\d{4}-\d{2}-\d{2}$/.test(data) ? data : null;
-            if (dataFormatada) {
-                const info = await SalasDisponiveisModel.buscarHorarioDisponibilidade(sala, dataFormatada);
-                if (info) horarios = info;
+        let dataFormatada = null;
+        if (data) {
+            if (/^\d{4}-\d{2}-\d{2}$/.test(data)) {
+                dataFormatada = data;
+            } else if (/^\d{2}\/\d{2}\/\d{4}$/.test(data)) {
+                // Converte DD/MM/YYYY para YYYY-MM-DD
+                const [d, m, y] = data.split('/');
+                dataFormatada = `${y}-${m}-${d}`;
+            } else if (/^\d{2}-\d{2}-\d{4}$/.test(data)) {
+                // Converte DD-MM-YYYY para YYYY-MM-DD
+                const [d, m, y] = data.split('-');
+                dataFormatada = `${y}-${m}-${d}`;
             }
+        }
+        if (sala && dataFormatada) {
+            const info = await SalasDisponiveisModel.buscarHorarioDisponibilidade(sala, dataFormatada);
+            if (info) horarios = info;
         }
         res.render('ConfirmarReserva', { sala, data, horarios });
     },
 
     paginaConfirmarReserva: async (req, res) => {
-        const { sala, data, horario } = req.query;
-        let horarios = { a_partir_das: '08:00', ate_as: '22:00' }; // padrão
-        if (sala && data) {
-            const dataFormatada = /^\d{4}-\d{2}-\d{2}$/.test(data) ? data : null;
-            if (dataFormatada) {
-                const info = await SalasDisponiveisModel.buscarHorarioDisponibilidade(sala, dataFormatada);
-                if (info) horarios = info;
-            }
+    const { sala, data, horario } = req.query;
+    let horarios = { a_partir_das: '08:00', ate_as: '22:00' }; // padrão
+    let dataFormatada = null;
+    if (data) {
+        if (/^\d{4}-\d{2}-\d{2}$/.test(data)) {
+            dataFormatada = data;
+        } else if (/^\d{2}\/\d{2}\/\d{4}$/.test(data)) {
+            // Converte DD/MM/YYYY para YYYY-MM-DD
+            const [d, m, y] = data.split('/');
+            dataFormatada = `${y}-${m}-${d}`;
+        } else if (/^\d{2}-\d{2}-\d{4}$/.test(data)) {
+            // Converte DD-MM-YYYY para YYYY-MM-DD
+            const [d, m, y] = data.split('-');
+            dataFormatada = `${y}-${m}-${d}`;
         }
+    }
+    if (sala && dataFormatada) {
+        const info = await SalasDisponiveisModel.buscarHorarioDisponibilidade(sala, dataFormatada);
+        if (info) horarios = info;
+    }
         res.render('ConfirmarReserva', { sala, data, horario, horarios });
     },
 

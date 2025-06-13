@@ -2,7 +2,7 @@
 
 ## Nome do Projeto: Smart Room
 
-### Autora do projeto: Ana Cristina Alves Jardim
+### Autora do projeto: [Ana Cristina Alves Jardim](https://www.linkedin.com/in/ana-cristina-jardim/)
 
 ## Sumário
 
@@ -36,6 +36,12 @@ Este projeto é focado em um perfil principal: estudantes matriculados em uma es
 A imagem do João foi gerada pelo site https://this-person-does-not-exist.com.
 
 ### 2.2. User Stories (Semana 01)
+
+Para garantir que o desenvolvimento da aplicação esteja alinhado com as necessidades reais dos usuários, foram elaboradas User Stories com base na perspectiva da persona João Gonçalves, um estudante que representa o público-alvo principal da aplicação.
+
+Cada User Story segue o formato tradicional da metodologia ágil, contendo uma descrição clara do desejo do usuário, bem como os critérios de aceite que definem quando a funcionalidade pode ser considerada completa. Além disso, a User Story US01, considerada a mais relevante do projeto, foi avaliada com base nos critérios INVEST, garantindo que ela seja Independente, Negociável, Valiosa, Estimável, Small (pequena) e Testável.
+
+A seguir, são apresentadas as User Stories identificadas:
 
 Identificação | US01
 --- | ---
@@ -631,16 +637,127 @@ Todas as telas foram desenvolvidas utilizando EJS, CSS e JavaScript para interat
 
 ### 4.1 Demonstração do Sistema Web (Semana 8)
 
-*VIDEO: Insira o link do vídeo demonstrativo nesta seção*
-*Descreva e ilustre aqui o desenvolvimento do sistema web completo, explicando brevemente o que foi entregue em termos de código e sistema. Utilize prints de tela para ilustrar.*
+Nesta etapa do projeto, foi concluído o desenvolvimento da aplicação web Smart Room, e o sistema já se encontra funcional. A seguir, apresenta-se um vídeo demonstrativo que ilustra o fluxo completo de navegação e uso da plataforma:
+
+[Vídeo Demonstração Smart Room]()
+
+A aplicação foi desenvolvida com foco na experiência do usuário, prezando por uma interface intuitiva, responsiva e visualmente agradável. O frontend utiliza tecnologias como HTML, CSS, JavaScript e EJS para renderização dinâmica das páginas. No backend, foi empregado Node.js com Express, com integração ao banco de dados PostgreSQL por meio da plataforma Supabase, garantindo persistência e atualização em tempo real dos dados.
+
+A seguir, são detalhadas as principais telas exibidas no vídeo, evidenciando os fluxos, funcionalidades implementadas e decisões de design.
+
+#### Tela de Login
+A tela de login permite que o aluno acesse sua conta informando matrícula e senha. Ela também possui link para a tela de cadastro, efeitos visuais de hover e layout responsivo.
+
+<div align="center">
+  <sub>FIGURA 26 - Tela de Login</sub><br>
+  <img src= "./assets/login.png" width="100%"
+  alt="tela de Login"><br>
+  <sup>Fonte: Material produzido pela autora, 2025</sup>
+</div>
+
+#### Tela de Cadastro
+O aluno pode criar sua conta preenchendo um formulário com validação de dados e feedback visual para erros e sucesso. O layout é centralizado, com campos bem espaçados e alinhados ao estilo do projeto.
+
+<div align="center">
+  <sub>FIGURA 27 - Tela de Cadastro</sub><br>
+  <img src= "./assets/cadastro.png" width="100%"
+  alt="tela de cadastro"><br>
+  <sup>Fonte: Material produzido pela autora, 2025</sup>
+</div>
+
+### Tela de Reservas
+Essa tela mostra todas as reservas ativas do aluno, com botões para cancelar reservas ou criar novas. Também é possível visualizar estatísticas de uso ou adicionar uma nova sala no menu lateral presente nessa tela.
+
+<div align="center">
+  <sub>FIGURA 28 - Tela de Reservas</sub><br>
+  <img src= "./assets/reservas.png" width="100%"
+  alt="tela de reservas"><br>
+  <sup>Fonte: Material produzido pela autora, 2025</sup>
+</div>
+
+<div align="center">
+  <sub>FIGURA 29 - Tela do Menu Lateral</sub><br>
+  <img src= "./assets/menu.png" width="100%"
+  alt="tela do menu lateral"><br>
+  <sup>Fonte: Material produzido pela autora, 2025</sup>
+</div>
+
+#### Tela de Adicionar Nova Sala
+Funcionalidade adicional criada para permitir o cadastro de novas salas. A tela conta com um formulário com validação e feedback visual, além de botão de retorno.
+
+<div align="center">
+  <sub>FIGURA 30 - Tela de Adicionar Nova Sala</sub><br>
+  <img src= "./assets/adicionar.png" width="100%"
+  alt="tela de adicionar nova sala"><br>
+  <sup>Fonte: Material produzido pela autora, 2025</sup>
+</div>
+
+#### Tela de Salas Disponíveis
+Essa tela exibe um calendário semanal com as salas disponíveis. Cada sala pode ser clicada para realizar uma reserva. A navegação entre semanas é possível, e o layout segue um padrão limpo e organizado.
+
+<div align="center">
+  <sub>FIGURA 31 - Tela de Salas Disponíveis</sub><br>
+  <img src= "./assets/salasDispo.png" width="100%"
+  alt="tela de salas disponíveis"><br>
+  <sup>Fonte: Material produzido pela autora, 2025</sup>
+</div>
+
+#### Tela de Confirmação de Reserva
+Após escolher uma sala, o aluno pode confirmar a reserva selecionando o horário e a duração desejados. A tela exibe todos os detalhes da reserva, e a confirmação fornece um feedback visual.
+
+<div align="center">
+  <sub>FIGURA 32 - Tela de Confirmação de Reserva</sub><br>
+  <img src= "./assets/confirmacao.png" width="100%"
+  alt="tela de confirmação de researva"><br>
+  <sup>Fonte: Material produzido pela autora, 2025</sup>
+</div>
+
+#### Pop-ups e Mensagens
+Diversos momentos da interação com o sistema são acompanhados de pop-ups que fornecem confirmações visuais para as ações realizadas:
+
+- Confirmação de reserva realizada com sucesso;
+
+- Confirmação de cancelamento;
+
+- Mensagem de sucesso após cancelamento.
+
+<div align="center">
+  <sub>FIGURA 33 - Pop up de Reserva Concluída</sub><br>
+  <img src= "./assets/concluido.png" width="100%"
+  alt="pop up de reserva concluida"><br>
+  <sup>Fonte: Material produzido pela autora, 2025</sup>
+</div>
+
+<div align="center">
+  <sub>FIGURA 34 - Pop up de Confirmação de Cancelamento de Reserva</sub><br>
+  <img src= "./assets/cancelamento.png" width="100%"
+  alt="pop up de confirmação de cancelamento de reserva"><br>
+  <sup>Fonte: Material produzido pela autora, 2025</sup>
+</div>
+
+<div align="center">
+  <sub>FIGURA 35 - Pop up de Confirmação de Sucesso no Cancelamento da Reserva</sub><br>
+  <img src= "./assets/sucesso.png" width="100%"
+  alt="pop up de confirmação de sucesso no cancelamento da reserva"><br>
+  <sup>Fonte: Material produzido pela autora, 2025</sup>
+</div>
 
 ### 4.2 Conclusões e Trabalhos Futuros (Semana 8)
 
-*Indique pontos fortes e pontos a melhorar de maneira geral.*
-*Relacione também quaisquer outras ideias que você tenha para melhorias futuras.*
+Este projeto representou um desafio significativo, mas também uma oportunidade valiosa de aprendizado. Ao longo do desenvolvimento do Smart Room, foi possível aprimorar consideravelmente minhas habilidades em programação e aprofundar o entendimento da arquitetura MVC (Model-View-Controller), aplicando-a de forma prática em uma aplicação web funcional.
+
+A aplicação atende plenamente às _User Stories_ definidas na seção 2.2, permitindo que estudantes visualizem, reservem e cancelem salas de estudo de forma intuitiva e eficiente. No entanto, alguns pontos de melhoria foram identificados, como a falta de testes automatizados e a lentidão na inicialização da rota /reservas, que pode impactar negativamente a experiência do usuário.
+
+Em relação a possíveis melhorias futuras, algumas ideias foram levantadas para tornar o sistema ainda mais robusto e alinhado com o uso real em instituições de ensino. Uma delas é a implementação de um sistema de denúncias, permitindo que usuários reportem comportamentos inadequados, como o uso prolongado das salas além do horário reservado. Com base nessas denúncias, o sistema poderia aplicar penalidades, como suspensões temporárias ou bloqueios de acesso.
+
+Outra melhoria importante seria a implementação de um sistema de autenticação mais restrito, que impeça alunos comuns de cadastrarem novas salas. Esse controle garantiria maior segurança e integridade dos dados, evitando o uso indevido da aplicação.
+
+Com essas possíveis evoluções, o Smart Room se tornaria uma solução ainda mais completa, segura e eficiente para a gestão de espaços de estudo em ambientes escolares e universitários.
 
 ## <a name="c5"></a>5. Referências
 
 MIRO. O que é wireframe? Disponível em: https://miro.com/pt/wireframe/o-que-e-wireframe/. Acesso em: 8 maio 2025.https://miro.com/pt/wireframe/o-que-e-wireframe/
+
+MOZILLA. Introdução à estilização: começando com CSS. MDN Web Docs. Disponível em: https://developer.mozilla.org/pt-BR/docs/Learn_web_development/Core/Styling_basics/Getting_started. Acesso em: 11 jun. 2025.
 
 ---

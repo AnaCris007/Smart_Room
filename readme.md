@@ -101,7 +101,7 @@ npm start
 Se tudo estiver configurado corretamente, o projeto estará rodando localmente em http://localhost:3000.
 
 ### Testar a API
-Você pode utilizar ferramentas como **Postman** ou **Insomnia** para testar os endpoints da API definidos na pasta `/routes`. Por exemplo:
+Você também pode utilizar ferramentas como **Postman** ou **Insomnia** para testar os endpoints da API definidos na pasta `/routes`. Por exemplo:
 
 - `POST http://localhost:3000/reservas` - para criar uma nova reserva.
 

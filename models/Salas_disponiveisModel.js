@@ -134,11 +134,46 @@ const SalasDisponiveisModel = {
   },
 
   async buscarHorarioDisponibilidade(numero_sala, dia_disponivel) {
-    const result = await pool.query(
-      `SELECT a_partir_das, ate_as FROM Salas_disponiveis WHERE numero_sala = $1 AND dia_disponivel = $2 LIMIT 1`,
-      [numero_sala, dia_disponivel]
-    );
-    return result.rows[0];
+    try {
+        // LOG para debug
+        console.log('buscarHorarioDisponibilidade params:', { numero_sala, dia_disponivel });
+
+        // Garante que a data está no formato YYYY-MM-DD (string)
+        let dataFormatada = dia_disponivel;
+        if (/^\d{2}\/\d{2}\/\d{4}$/.test(dia_disponivel)) {
+            const [d, m, y] = dia_disponivel.split('/');
+            dataFormatada = `${y}-${m}-${d}`;
+        } else if (/^\d{2}-\d{2}-\d{4}$/.test(dia_disponivel)) {
+            const [d, m, y] = dia_disponivel.split('-');
+            dataFormatada = `${y}-${m}-${d}`;
+        }
+        // Se vier como Date, converte para string
+        if (dataFormatada instanceof Date) {
+            dataFormatada = dataFormatada.toISOString().slice(0,10);
+        }
+
+        // LOG para debug
+        console.log('Query params:', { numero_sala, dataFormatada });
+
+        // Busca EXATAMENTE como está no banco (sem lower/trim)
+        const result = await pool.query(
+            `SELECT a_partir_das, ate_as FROM Salas_disponiveis WHERE numero_sala = $1 AND dia_disponivel = $2 LIMIT 1`,
+            [numero_sala, dataFormatada]
+        );
+
+        // LOG para debug
+        console.log('Query result:', result.rows);
+
+        if (result.rows && result.rows.length > 0) {
+            return result.rows[0];
+        } else {
+            console.warn(`Nenhuma disponibilidade encontrada para sala ${numero_sala} no dia ${dataFormatada}`);
+            return { a_partir_das: '08:00', ate_as: '22:00' };
+        }
+    } catch (err) {
+        console.error('Erro ao buscar disponibilidade:', err);
+        return { a_partir_das: '08:00', ate_as: '22:00' };
+    }
   },
 
   async atualizarHorarioDisponivel(numero_sala, dia_disponivel, novo_inicio) {
