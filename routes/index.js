@@ -7,6 +7,7 @@ const cancelamentoRoutes = require('./CancelamentosRoutes');
 const reservasRoutes = require('./ReservasRoutes');
 const salas_disponiveisRoutes = require('./Salas_disponiveisRoutes');
 const LoginRoutes = require('./LoginRoutes');
+const DuracaoRoutes = require('./DuracaoRoutes');
 
 // Define o prefixo da URL para cada grupo de rotas
 router.use('/alunos', alunoRoutes);              // Rotas relacionadas aos alunos
@@ -14,6 +15,7 @@ router.use('/cancelamentos', cancelamentoRoutes); // Rotas relacionadas aos canc
 router.use('/reservas', reservasRoutes);          // Rotas relacionadas às reservas
 router.use('/salas_disponiveis', salas_disponiveisRoutes); // Rotas relacionadas às salas disponíveis
 router.use('/login', LoginRoutes);                 // Rotas relacionadas ao login/autenticação
+router.use('/duracao', DuracaoRoutes);  // Rotas relacionadas a duração
 
 // Exporta o roteador configurado para ser usado no app principal
 module.exports = router;
