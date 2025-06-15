@@ -74,7 +74,7 @@ meu-projeto/
 ## 🔧 Como executar o código
 Caso você queira apenas acessar essa aplicação web basta clicar no link abaixo:
 
-_inserir link_
+https://smart-room-r75m.onrender.com
 
 Entretanto, caso você queira executar o projeto localmente, você deve:
 ### Clonar o repositório:
