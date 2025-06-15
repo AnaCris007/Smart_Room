@@ -1,4 +1,4 @@
-const CancelamentosModel = require('../models/CancelamentosModel');
+const CancelamentosModel = require('../models/CancelamentoModel');
 
 exports.cancelarReserva = async (req, res) => {
     try {

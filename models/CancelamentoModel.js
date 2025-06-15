@@ -21,7 +21,18 @@ const listarCancelamentos = async () => {
   return pool.query(query);  // Executa a query para retornar os cancelamentos
 };
 
+const contarCancelamentosPorMatricula = async (matricula_alunos) => {
+    const result = await pool.query(
+        `SELECT COUNT(*) FROM cancelamentos c
+         JOIN reservas r ON c.id_reservas = r.id_reservas
+         WHERE r.matricula_alunos = $1`,
+        [matricula_alunos]
+    );
+    return parseInt(result.rows[0].count, 10);
+};
+
 module.exports = {
   cancelarReserva,
   listarCancelamentos,
+  contarCancelamentosPorMatricula,
 };

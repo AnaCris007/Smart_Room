@@ -1,7 +1,7 @@
 const pool = require('../config/db');
 const SalasDisponiveisModel = require('../models/Salas_disponiveisModel');
 const ReservasModel = require('../models/ReservasModel');
-const CancelamentosModel = require('../models/CancelamentosModel');
+const CancelamentosModel = require('../models/CancelamentoModel');
 
 const PagesController = {
     paginaLogin: (req, res) => {

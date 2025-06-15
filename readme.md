@@ -17,33 +17,58 @@ Portanto, a estrutura das pastas foi pensada de modo a seguir esse modelo, confo
 ```
 meu-projeto/
 │
-├── config/                # Arquivos de configuração (ex: conexão com banco)
-│   └── database.js
+├── config/                # Arquivos de configuração 
+│   └── db.js              # Configuração de conexão com o banco de dados
 ├── controllers/           # Lógica de controle das requisições
-│   └── HomeController.js
-├── documents/             # Arquivos relacionados ao WAD(Web Design Document)
-│   └── assets/            # Assets do WAD
-│   └── PI-WAD.md          # Web Design Document 
-├── models/                # Definição de modelos de dados (estrutura do banco)
-│   └── User.js
-├── routes/                # Definição das rotas do sistema
-│   └── index.js
-├── services/              # Serviços auxiliares do sistema
-│   └── userService.js
-├── assets/                # Arquivos públicos como imagens e fontes
-├── scripts/               # Arquivos de JavaScript públicos
-│   └── init.sql           # Script de criação e inserção de dados no banco
-│   └── runSQLScript.js    # Script para executar comandos SQL via Node.js      
-├── styles/                # Arquivos CSS públicos
-├── tests/                 # Arquivos de testes unitários
-│   └── example.test.js
-├── .gitignore             # Arquivo para ignorar arquivos no Git
-├── .env.example           # Arquivo de exemplo para variáveis de ambiente
-├── jest.config.js         # Arquivo de configuração do Jest
-├── package.json           # Gerenciador de dependências do Node.js
-├── readme.md              # Documentação do projeto (Markdown)
-├── rest.http              # Teste de endpoints (opcional)
-└── server.js              # Arquivo principal que inicializa o servidor
+│   ├── AlunosController.js
+│   ├── CancelamentosController.js
+│   ├── DuracaoController.js
+│   ├── LoginController.js
+│   ├── PagesController.js
+│   ├── ReservasController.js
+│   └── Salas_disponiveisController.js
+├── documents/             # Documentação do projeto
+│   ├── assets/            # Imagens e recursos visuais da documentação
+│   └── WAD.md             # Web Application Document
+├── migrations/            # Scripts de migração do banco de dados
+│   └── migrate.js
+├── models/                # Camada de acesso aos dados
+│   ├── AlunosModel.js
+│   ├── CancelamentoModel.js
+│   ├── DuracaoModel.js
+│   ├── LoginModel.js
+│   ├── ReservasModel.js
+│   └── Salas_disponiveisModel.js
+├── public/                # Arquivos públicos acessíveis pelo cliente
+│   ├── assets/            # Recursos visuais (imagens, ícones)
+│   ├── css/               # Arquivos de estilo CSS
+│   └── js/                # Scripts JavaScript do cliente
+├── routes/                # Definição das rotas da aplicação
+│   ├── AlunosRoutes.js
+│   ├── CancelamentosRoutes.js
+│   ├── DuracaoRoutes.js
+│   ├── LoginRoutes.js
+│   ├── PagesRoutes.js
+│   ├── ReservasRoutes.js
+│   ├── Salas_disponiveisRoutes.js
+│   └── index.js           # Arquivo que centraliza todas as rotas
+├── scripts/               # Scripts utilitários
+│   └── init.sql           # Script de inicialização do banco de dados
+├── views/                 # Templates para renderização no servidor (EJS)
+│   ├── Login.ejs
+│   ├── Cadastro.ejs
+│   ├── Reservas.ejs
+│   ├── SalasDisponiveis.ejs
+│   ├── ConfirmarReserva.ejs
+│   ├── AdicionarSala.ejs
+│   └── partials/          # Componentes parciais reutilizáveis
+│       ├── head.ejs
+│       └── menu.ejs
+├── .env.example           # Modelo para as variáveis de ambiente
+├── .gitignore             # Arquivos e pastas ignorados pelo Git
+├── package.json           # Dependências e scripts do projeto
+├── readme.md              # Documentação resumida do projeto
+└── server.js              # Ponto de entrada da aplicação
 ```
 
 ## 🔧 Como executar o código

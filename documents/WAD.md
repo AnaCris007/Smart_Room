@@ -210,55 +210,68 @@ Este projeto utiliza a arquitetura MVC (Model-View-Controller), onde os arquivos
 
 Abaixo está a descrição detalhada dos arquivos contidos na pasta models, incluindo as principais funções implementadas e suas finalidades:
 
-#### __AlunoModel.js__
+#### __AlunosModel.js__
 
 Responsável por lidar com os dados da tabela `alunos`, este arquivo possui as seguintes funções:
 
-| Função                     | Descrição                                                                     |
-|---------------------------|---------------------------------------------------------------------------------|
-| `cadastrarAluno`          | Cadastra um novo aluno no banco de dados.                                      |
-| `listarAlunos`            | Retorna uma lista de todos os alunos cadastrados.                              |
-| `listarReservasPorAlunoId`| Lista todas as reservas feitas por um aluno específico, baseado na matrícula.  |
+| Função                    | Descrição                                                                 |
+|--------------------------|---------------------------------------------------------------------------|
+| verificarMatriculaExiste | Verifica se uma matrícula já está cadastrada no sistema                   |
+| cadastrarAluno           | Cadastra um novo aluno no banco de dados, com validações e criptografia de senha |
+| listarAlunos             | Retorna uma lista de todos os alunos cadastrados                         |
+| listarReservasPorAlunoId | Lista todas as reservas feitas por um aluno específico, baseado na matrícula |
 
-#### __CancelamentosModel.js__
+#### __CancelamentoModel.js__
 
 Este módulo é responsável por lidar com os cancelamentos de reservas no sistema. Ele interage com as tabelas `cancelamentos` e `reservas` do banco de dados.
 
-| Função               | Descrição                                                                                       |
-|----------------------|-------------------------------------------------------------------------------------------------|
-| `cancelarReserva`    | Insere um novo registro de cancelamento usando o `id_reservas` e define a data como o dia atual. |
-| `listarCancelamentos`| Retorna uma lista de todos os cancelamentos, incluindo informações detalhadas da reserva cancelada. |
+| Função                         | Descrição                                                                                                   |
+|--------------------------------|-------------------------------------------------------------------------------------------------------------|
+| cancelarReserva                | Insere um novo registro de cancelamento usando o id_reservas e define a data atual                         |
+| listarCancelamentos            | Retorna uma lista de todos os cancelamentos, incluindo detalhes das reservas relacionadas (id_aluno, id_sala, data_reserva, horários) |
+| contarCancelamentosPorMatricula| Conta o número total de cancelamentos realizados por um aluno específico através da matrícula              |
 
 #### __LoginModel.js__
 
-Este módulo é responsável por verificar as credenciais de login dos alunos no sistema. Para isso, ele interage com a tabela alunos do banco de dados, a fim de validar a matrícula e a senha fornecidas.
+Este módulo é responsável por verificar as credenciais de login dos alunos no sistema. Para isso, ele interage com a tabela `alunos` do banco de dados, a fim de validar a matrícula e a senha fornecidas.
 
-| Função            | Descrição                                                                 |
-|-------------------|---------------------------------------------------------------------------|
-| `verificarLogin`  | Verifica se a combinação de matrícula e senha do aluno existe no banco.  |
+| Função         | Descrição                                                           |
+|----------------|----------------------------------------------------------------------|
+| verificarLogin | Busca os dados do aluno pela matrícula para validação de login      |
 
 #### __ReservasModel.js__
 
 Este módulo é responsável por gerenciar as operações de criação, listagem, atualização e exclusão de reservas no sistema. Ele interage com a tabela `reservas` do banco de dados.
 
-| Função              |    Descrição                                                                                     |
-|---------------------|-----------------------------------------------------------------------------------------------|
-| `criarReserva`      | Insere uma nova reserva no banco de dados com as informações de aluno, sala, duração, horário e data. |
-| `listarReservas`    | Retorna todas as reservas cadastradas, ordenadas por data (descendente) e horário.           |
-| `atualizarReserva`  | Atualiza os dados de uma reserva específica, identificada pelo seu `id_reservas`.            |
-| `excluirReserva`    | Exclui uma reserva existente com base no `id_reservas`, retornando os dados excluídos.       |
-
+| Função                      | Descrição                                                                 |
+|-----------------------------|--------------------------------------------------------------------------|
+| criarReserva                | Insere uma nova reserva com informações de aluno, sala, duração, horário e data |
+| listarReservasPorMatricula | Lista todas as reservas ativas de um aluno específico                   |
+                                                                       
 #### __Salas_disponiveisModel.js__
 
-Este arquivo gerencia as operações relacionadas às salas disponíveis para reserva no sistema. Ele I
-interage diretamente com a tabela `salas_disponiveis` no banco de dados.
+Este arquivo gerencia as operações relacionadas às salas disponíveis para reserva no sistema. Ele interage diretamente com a tabela `salas_disponiveis` no banco de dados.
 
-| Função                  | Descrição                                                                                           |
-|-------------------------|---------------------------------------------------------------------------------------------------|
-| `criarSalaDisponivel`   | Insere uma nova sala disponível com número, dia e horário de disponibilidade.                      |
-| `listarSalasDisponiveis`| Retorna todas as salas disponíveis, ordenadas por dia e número da sala.                           |
-| `atualizarSalaDisponivel`| Atualiza os dados de uma sala disponível específica, identificada pelo `id_salas_dispo`.          |
-| `excluirSalaDisponivel` | Remove uma sala disponível do banco de dados pelo seu `id_salas_dispo`.                           |
+| Função                          | Descrição                                                                  |
+|----------------------------------|-----------------------------------------------------------------------------|
+| criarSalaDisponivel              | Insere uma nova sala disponível                                            |
+| listarSalasDisponiveis           | Retorna todas as salas disponíveis                                         |
+| salasAgrupadasPorDia             | Agrupa as salas por dia da semana                                          |
+| salasAgrupadasPorDiaSemanaAtual | Agrupa as salas para a semana atual                                        |
+| salasAgrupadasPorSemana          | Agrupa as salas por semana                                                 |
+| buscarHorarioDisponibilidade     | Busca o horário disponível de uma sala                                     |
+| atualizarSalaDisponivel          | Atualiza dados de uma sala                                                 |
+| excluirSalaDisponivel            | Remove uma sala disponível                                                 |
+| atualizarHorarioDisponivel       | Atualiza o horário inicial de disponibilidade                              |
+
+#### _DuracaoModel.js
+
+Gerencia as durações das reservas e interage com a tabela `duracao`:
+
+| Função           | Descrição                                     |
+|------------------|-----------------------------------------------|
+| cadastrarDuracao | Cadastra uma nova duração de reserva          |
+| listarDuracoes   | Lista todas as durações cadastradas           |
 
 ### 3.2. Arquitetura (Semana 5)
 
@@ -319,10 +332,13 @@ Caso o usuário ainda não possua cadastro, ele pode acessar esta tela a partir 
 #### Tela 6 - Informações:
 Exibida quando o usuário clica em um ícone específico na tela 2, revelando uma aba lateral com o total de reservas e cancelamentos realizados.
 
-#### Tela 7 - Cancelamento:
+#### Tela 7 - Adicionar Nova Sala:
+Acessível através do menu lateral na tela 2, esta interface permite aos usuários cadastrar novas salas no sistema.
+
+#### Tela 8 - Cancelamento:
 Pop-up exibido quando o usuário opta por cancelar uma reserva na tela 2. Ela solicita confirmação da ação.
 
-#### Tela 8 - Mensagem de Sucesso:
+#### Tela 9 - Mensagem de Sucesso:
 Pop-up de confirmação exibido após a confirmação do cancelamento na tela 7, informando que a reserva foi cancelada com sucesso e permitindo que o usuário volte para a tela 2.
 
 Os wireframes foram construídos com base nas User Stories descritas na seção 2.2 desse documento, em especial, a User Story US01, que trata da visualização de salas disponíveis para reserva em um dia específico. A funcionalidade é contemplada nas seguinte tela:
@@ -508,6 +524,16 @@ A API desenvolvida para o sistema **Smart Room** segue a arquitetura RESTful e �
 - `POST /login`  
   Realiza a autenticação de um usuário/aluno no sistema.
 
+#### Durações (`/duracoes`)
+- `POST /duracoes`
+  Cadastra uma nova opção de duração para reservas
+- `GET /duracoes`
+Lista todas as durações disponíveis para reserva
+- `PUT /duracoes/:id`
+Atualiza uma duração específica
+- `DELETE /duracoes/:id`
+Remove uma opção de duração do sistema
+
 ---
 
 ### 3.7. Interface e Navegação (Semana 07)
@@ -639,7 +665,12 @@ Todas as telas foram desenvolvidas utilizando EJS, CSS e JavaScript para interat
 
 Nesta etapa do projeto, foi concluído o desenvolvimento da aplicação web Smart Room, e o sistema já se encontra funcional. A seguir, apresenta-se um vídeo demonstrativo que ilustra o fluxo completo de navegação e uso da plataforma:
 
-[Vídeo Demonstração Smart Room]()
+<p align="center">
+  <a href="https://www.youtube.com/watch?v=gtyhSu4sHos" target="_blank">
+    <img src="https://img.youtube.com/vi/gtyhSu4sHos/0.jpg" alt="Vídeo demonstrativo do Smart Room" />
+  </a>
+</p>
+
 
 A aplicação foi desenvolvida com foco na experiência do usuário, prezando por uma interface intuitiva, responsiva e visualmente agradável. O frontend utiliza tecnologias como HTML, CSS, JavaScript e EJS para renderização dinâmica das páginas. No backend, foi empregado Node.js com Express, com integração ao banco de dados PostgreSQL por meio da plataforma Supabase, garantindo persistência e atualização em tempo real dos dados.
 
@@ -741,6 +772,18 @@ Diversos momentos da interação com o sistema são acompanhados de pop-ups que 
   alt="pop up de confirmação de sucesso no cancelamento da reserva"><br>
   <sup>Fonte: Material produzido pela autora, 2025</sup>
 </div>
+
+Em termos de código, a arquitetura MVC (Model-View-Controller) foi utilizada, como foi descrito na seção 3.2, garantindo a separação clara entre as responsabilidades de cada camada da aplicação:
+
+Model (Modelo): Responsável pela comunicação com o banco de dados PostgreSQL, realizando operações de leitura, escrita, atualização e exclusão de dados referentes a usuários, salas e reservas. Os modelos foram implementados em JavaScript, utilizando bibliotecas como pg para integração com o banco de dados via Supabase.
+
+View (Visão): As views foram desenvolvidas utilizando EJS (Embedded JavaScript), permitindo a renderização dinâmica das páginas HTML com base nos dados fornecidos pelos controladores. O uso de EJS facilitou a criação de componentes reutilizáveis e a atualização em tempo real das informações exibidas ao usuário.
+
+Controller (Controlador): Os controladores atuam como intermediários entre as views e os models, processando as requisições dos usuários, validando dados e coordenando as respostas enviadas para o frontend. Cada funcionalidade principal do sistema (login, cadastro, reservas, salas) possui seu próprio controlador, promovendo organização e facilidade de manutenção do código.
+
+Essa estrutura modular proporcionou maior escalabilidade ao projeto, permitindo a adição de novas funcionalidades (como a tela de adicionar sala) sem comprometer a integridade do sistema. Além disso, a separação de responsabilidades facilita a identificação e correção de eventuais erros, bem como a implementação de melhorias futuras.
+
+Por fim, toda a navegação e interatividade do sistema foram aprimoradas com JavaScript no frontend, garantindo uma experiência fluida.
 
 ### 4.2 Conclusões e Trabalhos Futuros (Semana 8)
 
