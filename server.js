@@ -51,6 +51,10 @@ app.use((err, req, res, next) => {
   next(err);
 });
 
+app.get('/', (req, res) => {
+  res.redirect('/login');
+});
+
 // Inicializa o servidor, fazendo ele escutar na porta definida
 app.listen(port, () => {
   console.log(`Servidor rodando na porta ${port}`);
