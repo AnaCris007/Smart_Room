@@ -287,7 +287,7 @@ O diagrama a seguir ilustra a estrutura dessa arquitetura:
 
 <div align="center">
   <sub>FIGURA 3 – Diagrama MVC</sub><br>
-  <img src="./assets/mvc.drawio.png" width="100%" alt="Diagrama"><br>
+  <img src="./assets/MVC.drawio.png" width="100%" alt="Diagrama"><br>
   <sup>Fonte: Material produzido pela autora, 2025</sup>
 </div>
 
