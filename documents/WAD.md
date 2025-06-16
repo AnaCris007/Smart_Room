@@ -264,7 +264,7 @@ Este arquivo gerencia as operações relacionadas às salas disponíveis para re
 | excluirSalaDisponivel            | Remove uma sala disponível                                                 |
 | atualizarHorarioDisponivel       | Atualiza o horário inicial de disponibilidade                              |
 
-#### _DuracaoModel.js
+#### _DuracaoModel.js_
 
 Gerencia as durações das reservas e interage com a tabela `duracao`:
 
